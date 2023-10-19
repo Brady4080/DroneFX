@@ -1,35 +1,48 @@
 package com.example.farmdashboard;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import java.net.URL;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import java.util.ResourceBundle;
 
-public class FarmDashboardController {
-    // how to set up a combo box: https://stackoverflow.com/questions/19065464/how-to-populate-a-list-values-to-a-combobox-in-javafx
-    // another example that helped me learn I need to use initialize() : https://stackoverflow.com/questions/18361195/javafx-how-to-load-populate-values-at-start-up
+public class FarmDashboardController implements Initializable {
     @FXML
-    private ComboBox comboBox;
+    private BorderPane borderPane;
 
     @FXML
-    protected void initialize() {
-        comboBox.getItems().add("option 1");
-        comboBox.getItems().add("option 2");
+    private TreeView tree_view;
+
+    @FXML
+    private AnchorPane root_pane;
+
+    @Override public void initialize(URL arg0, ResourceBundle arg1){
+        // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
+        borderPane.setStyle("-fx-border-color: red;");
+
+        Label label = new Label("Barn");
+        label.setAlignment(Pos.TOP_LEFT);
+
+        borderPane.setTop(label);
+
+
+
+        // how to get use the TreeView: https://www.youtube.com/watch?v=CNLHTrY3Nh8&ab_channel=BroCode
+        TreeItem<String> rootItem = new TreeItem<>("Root");
+        TreeItem<String> branchItem1 = new TreeItem<>("Barn");
+
+        //rootItem.setValue(root_pane);
+        //branchItem1.setValue(borderPane);
+
+        rootItem.getChildren().addAll(branchItem1);
+        tree_view.setRoot(rootItem);
     }
 
-    @FXML
-    private TextArea statusMessage;
+    public void selectItem(){
 
-    @FXML
-    protected void onSelectButtonClick() {
-        // how to get comboBox selection: http://www.learningaboutelectronics.com/Articles/How-to-retrieve-data-from-a-ChoiceBox-in-JavaFX.php
-        String comboBoxValue = "" + comboBox.getValue();
-        statusMessage.appendText(comboBoxValue + " selected \n");
     }
 
-    @FXML
-    protected void onDeleteButtonClick() {
-        String comboBoxValue = "" + comboBox.getValue();
-        statusMessage.appendText(comboBoxValue + " deleted \n");
-    }
 }
