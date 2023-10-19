@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.farmdashboard.FarmDashboardController">
+   <SplitPane dividerPositions="0.19524405506883605" prefHeight="900.0" prefWidth="1600.0">
+     <items>
+         <SplitPane dividerPositions="0.6670378619153675" orientation="VERTICAL" prefHeight="898.0" prefWidth="1600.0">
+           <items>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                  <children>
+                     <ListView layoutX="26.0" layoutY="312.0" prefHeight="270.0" prefWidth="258.0" />
+                     <TreeView layoutX="26.0" layoutY="15.0" prefHeight="282.0" prefWidth="258.0" />
+                  </children>
+               </AnchorPane>
+               <SplitPane dividerPositions="0.581081081081081" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                 <items>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <children>
+                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" text="Drone Image Action" textAlignment="CENTER" textFill="#1767d0">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Button layoutX="19.0" layoutY="114.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Scan Farm" />
+                           <Button layoutX="19.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Vist Item/Container" />
+                           <Button layoutX="159.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Go Home" />
+                        </children>
+                     </AnchorPane>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <children>
+                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" text="Tello Drone Actions" textAlignment="CENTER" textFill="#1767d0">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Scan Farm" />
+                           <Button layoutX="165.0" layoutY="61.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Vist Item/Container" />
+                        </children>
+                     </AnchorPane>
+                 </items>
+               </SplitPane>
+           </items>
+         </SplitPane>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <children>
+                <TextArea fx:id="statusMessage" editable="false" layoutX="928.0" layoutY="36.0" prefHeight="135.0" prefWidth="300.0" />
+                <ComboBox fx:id="comboBox" layoutX="1003.0" layoutY="197.0" prefWidth="150.0" />
+                <Button layoutX="1102.0" layoutY="282.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" text="Delete" />
+                <Button layoutX="1003.0" layoutY="282.0" mnemonicParsing="false" onAction="#onSelectButtonClick" text="Select" />
+               <BorderPane layoutX="201.0" layoutY="153.0" prefHeight="354.0" prefWidth="345.0" />
+            </children>
+         </AnchorPane>
+     </items>
+   </SplitPane>
+</AnchorPane>
