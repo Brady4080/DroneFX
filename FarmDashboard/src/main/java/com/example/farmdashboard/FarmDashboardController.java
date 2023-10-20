@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import java.util.List;
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -32,6 +33,10 @@ public class FarmDashboardController implements Initializable {
     private AnchorPane root_pane;
     @FXML
     private Button existing_container;
+    @FXML
+    private Button delete_container;
+    @FXML
+    private Button change_name;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
@@ -173,8 +178,65 @@ public class FarmDashboardController implements Initializable {
 
         });
 
+        // Deleting Pane
+        delete_container.setOnAction(actionEvent -> {
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            VBox vbox = new VBox();
+            Label existingPanesLabel = new Label("Select From Existing Panes");
+            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            select_pane.getItems().addAll(existingPanes);
+            select_pane.getSelectionModel().selectFirst();
+            Button confirmButton = new Button("Delete Container");
 
+            confirmButton.setOnAction(e -> {
+                Pane selectedPane = select_pane.getValue();
+                Parent parent = selectedPane.getParent();
+                ((Pane) parent).getChildren().remove(selectedPane);
+                stage.close();
+            });
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, confirmButton);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(10);
 
+            Scene scene = new Scene(vbox, 700, 500);
+            stage.setScene(scene);
+            stage.show();
+        });
+
+        // Changing Pane Name
+        change_name.setOnAction(actionEvent -> {
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            VBox vbox = new VBox();
+            Label existingPanesLabel = new Label("Select From Existing Panes");
+            Label containerLabel = new Label("Enter New Container Name");
+            TextField textField = new TextField("");
+            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            select_pane.getItems().addAll(existingPanes);
+            select_pane.getSelectionModel().selectFirst();
+            Button confirmButton = new Button("Confirm");
+
+            confirmButton.setOnAction(e -> {
+                Pane selectedPane = select_pane.getValue();
+                String name = textField.getText();
+                if (!name.isEmpty()) {
+                    selectedPane.setStyle("-fx-border-color: red;");
+                    selectedPane.getChildren().add(containerLabel);
+                    TreeItem<String> newBranchItem = new TreeItem<>(name);
+                    rootItem.getChildren().add(newBranchItem);
+                    existingPanes.add(selectedPane);
+                    stage.close();
+                }
+            });
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, confirmButton);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(10);
+
+            Scene scene = new Scene(vbox, 700, 500);
+            stage.setScene(scene);
+            stage.show();
+        });
     }
 
     public void selectItem(){
