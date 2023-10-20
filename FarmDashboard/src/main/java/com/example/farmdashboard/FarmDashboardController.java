@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -27,8 +30,17 @@ public class FarmDashboardController implements Initializable {
     private Button add_container;
     @FXML
     private AnchorPane root_pane;
+    @FXML
+    private Button existing_container;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
+        // storing a list of the panes
+        ArrayList<Pane> existingPanes = new ArrayList<>();
+        existingPanes.add(barn);
+        existingPanes.add(cattle);
+        existingPanes.add(drone_pane);
+        existingPanes.add(command_center);
+
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         barn.setStyle("-fx-border-color: red;");
         cattle.setStyle("-fx-border-color: red;");
@@ -45,18 +57,19 @@ public class FarmDashboardController implements Initializable {
         Label label3 = new Label("Command Center");
         command_center.getChildren().add(label3);
 
-
         // TreeView Pane
         // how to get use the TreeView: https://www.youtube.com/watch?v=CNLHTrY3Nh8&ab_channel=BroCode
         TreeItem<String> rootItem = new TreeItem<>("Root");
-        TreeItem<String> branchItem1 = new TreeItem<>("Barn");
-        //rootItem.setValue(root_pane);
-        //branchItem1.setValue(Pane);
-        rootItem.getChildren().addAll(branchItem1);
+        TreeItem<String> barn = new TreeItem<>("Barn");
+        TreeItem<String> cattle = new TreeItem<>("Cattle");
+        TreeItem<String> command_center = new TreeItem<>("Command Center");
+        TreeItem<String> drone_pane = new TreeItem<>("Drone");
+        barn.getChildren().add(cattle);
+        command_center.getChildren().add(drone_pane);
+        rootItem.getChildren().addAll(barn, command_center);
         tree_view.setRoot(rootItem);
 
-
-        // Confirmation Window
+        // Create New Container Window
         add_container.setOnAction(actionEvent -> {
             Stage stage = new Stage();
             stage.setTitle("Confirmation");
@@ -89,6 +102,9 @@ public class FarmDashboardController implements Initializable {
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
                     root_pane.getChildren().add(newPane);
+                    TreeItem<String> newBranchItem = new TreeItem<>(name);
+                    rootItem.getChildren().add(newBranchItem);
+                    existingPanes.add(newPane);
                     stage.close();
                 }
             });
@@ -101,6 +117,63 @@ public class FarmDashboardController implements Initializable {
             stage.setScene(scene);
             stage.show();
         });
+
+        // Add container to existing container
+        existing_container.setOnAction(actionEvent -> {
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            VBox vbox = new VBox();
+            Label existingPanesLabel = new Label("Select From Existing Panes");
+            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            select_pane.getItems().addAll(existingPanes);
+            select_pane.getSelectionModel().selectFirst();
+            Label containerLabel = new Label("Enter Container Name");
+            TextField textField = new TextField("");
+            Label widthLabel = new Label("Enter the width of the pane:");
+            TextField widthTextField = new TextField("");
+            Label heightLabel = new Label("Enter the height of the pane:");
+            TextField heightTextField = new TextField("");
+            Label xLabel = new Label("Enter the X position of the pane:");
+            TextField xTextField = new TextField("");
+            Label yLabel = new Label("Enter the Y position of the pane:");
+            TextField yTextField = new TextField("");
+            Button confirmButton = new Button("Create Pane");
+
+            confirmButton.setOnAction(e -> {
+                Pane selectedPane = select_pane.getValue();
+                String name = textField.getText();
+                // how to read the input and turn it into a double: https://www.geeksforgeeks.org/double-parsedouble-method-in-java-with-examples/#
+                double width = Double.parseDouble(widthTextField.getText());
+                double height = Double.parseDouble(heightTextField.getText());
+                double x = Double.parseDouble(xTextField.getText());
+                double y = Double.parseDouble(yTextField.getText());
+                if (!name.isEmpty()) {
+                    Pane newPane = new Pane();
+                    Label paneLabel = new Label(name);
+                    newPane.setStyle("-fx-border-color: red;");
+                    newPane.setPrefSize(width, height);
+                    newPane.setLayoutX(x);
+                    newPane.setLayoutY(y);
+                    newPane.getChildren().add(paneLabel);
+                    selectedPane.getChildren().add(newPane);
+                    TreeItem<String> newBranchItem = new TreeItem<>(name);
+                    rootItem.getChildren().add(newBranchItem);
+                    existingPanes.add(newPane);
+                    stage.close();
+                }
+            });
+
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(10);
+
+            Scene scene = new Scene(vbox, 700, 500);
+            stage.setScene(scene);
+            stage.show();
+
+        });
+
+
 
     }
 
