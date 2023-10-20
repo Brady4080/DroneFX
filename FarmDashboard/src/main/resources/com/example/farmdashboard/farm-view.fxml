@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.farmdashboard.FarmDashboardController">
@@ -50,7 +52,24 @@
          </SplitPane>
        <AnchorPane fx:id="root_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <children>
-               <BorderPane fx:id="borderPane" layoutX="14.0" layoutY="584.0" prefHeight="300.0" prefWidth="300.0" />
+               <Pane fx:id="command_center" layoutX="1069.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                  <children>
+                     <Pane fx:id="drone_pane" layoutX="55.0" layoutY="55.0" prefHeight="90.0" prefWidth="90.0">
+                        <children>
+                           <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="20.0" layoutY="20.0">
+                              <image>
+                                  <Image url="@icons8-drone-100.png" />
+            
+                              </image>
+                           </ImageView>
+                        </children></Pane>
+                  </children>
+               </Pane>
+               <Pane fx:id="barn" layoutX="969.0" layoutY="584.0" prefHeight="300.0" prefWidth="300.0">
+                  <children>
+                     <Pane fx:id="cattle" layoutX="101.0" layoutY="92.0" prefHeight="90.0" prefWidth="90.0" />
+                  </children>
+               </Pane>
             </children>
          </AnchorPane>
      </items>
