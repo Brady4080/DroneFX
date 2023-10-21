@@ -100,6 +100,7 @@ public class FarmDashboardController implements Initializable {
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
+                    newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
                     newPane.setPrefSize(width, height);
@@ -154,6 +155,7 @@ public class FarmDashboardController implements Initializable {
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
+                    newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
                     newPane.setPrefSize(width, height);
@@ -221,6 +223,8 @@ public class FarmDashboardController implements Initializable {
                 Pane selectedPane = select_pane.getValue();
                 String name = textField.getText();
                 if (!name.isEmpty()) {
+                    Label label = (Label)selectedPane.getChildren().get(0);
+                    label.setText(name);
                     selectedPane.setStyle("-fx-border-color: red;");
                     selectedPane.getChildren().add(containerLabel);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
