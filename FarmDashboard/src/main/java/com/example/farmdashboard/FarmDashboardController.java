@@ -81,6 +81,8 @@ public class FarmDashboardController implements Initializable {
             VBox vbox = new VBox();
             Label containerLabel = new Label("Enter Container Name");
             TextField textField = new TextField("");
+            Label priceLabel = new Label("Enter Price");
+            TextField pricetextField = new TextField("");
             Label widthLabel = new Label("Enter the width of the pane:");
             TextField widthTextField = new TextField("");
             Label heightLabel = new Label("Enter the height of the pane:");
@@ -115,7 +117,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(containerLabel, textField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(containerLabel, textField,priceLabel,pricetextField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -135,6 +137,8 @@ public class FarmDashboardController implements Initializable {
             select_pane.getSelectionModel().selectFirst();
             Label containerLabel = new Label("Enter Container Name");
             TextField textField = new TextField("");
+            Label priceLabel = new Label("Enter Price");
+            TextField pricetextField = new TextField("");
             Label widthLabel = new Label("Enter the width of the pane:");
             TextField widthTextField = new TextField("");
             Label heightLabel = new Label("Enter the height of the pane:");
@@ -170,7 +174,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -214,6 +218,16 @@ public class FarmDashboardController implements Initializable {
             Label existingPanesLabel = new Label("Select From Existing Panes");
             Label containerLabel = new Label("Enter New Container Name");
             TextField textField = new TextField("");
+            Label priceLabel = new Label("Enter Price");
+            TextField pricetextField = new TextField("");
+            Label widthLabel = new Label("Enter the width of the pane:");
+            TextField widthTextField = new TextField("");
+            Label heightLabel = new Label("Enter the height of the pane:");
+            TextField heightTextField = new TextField("");
+            Label xLabel = new Label("Enter the X position of the pane:");
+            TextField xTextField = new TextField("");
+            Label yLabel = new Label("Enter the Y position of the pane:");
+            TextField yTextField = new TextField("");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
             select_pane.getItems().addAll(existingPanes);
             select_pane.getSelectionModel().selectFirst();
@@ -227,13 +241,18 @@ public class FarmDashboardController implements Initializable {
                     label.setText(name);
                     selectedPane.setStyle("-fx-border-color: red;");
                     selectedPane.getChildren().add(containerLabel);
+                    selectedPane.getChildren().add(priceLabel);
+                    selectedPane.getChildren().add(widthLabel);
+                    selectedPane.getChildren().add(heightLabel);
+                    selectedPane.getChildren().add(xLabel);
+                    selectedPane.getChildren().add(yLabel);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
                     existingPanes.add(selectedPane);
                     stage.close();
                 }
             });
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, confirmButton,priceLabel, pricetextField,widthLabel,widthTextField,heightLabel, heightTextField,xLabel,xTextField,yLabel,yTextField);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
