@@ -36,7 +36,7 @@ public class FarmDashboardController implements Initializable {
     @FXML
     private Button delete_container;
     @FXML
-    private Button change_name;
+    private Button change_container;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
@@ -85,8 +85,8 @@ public class FarmDashboardController implements Initializable {
             TextField pricetextField = new TextField("");
             Label widthLabel = new Label("Enter the width of the pane:");
             TextField widthTextField = new TextField("");
-            Label heightLabel = new Label("Enter the height of the pane:");
-            TextField heightTextField = new TextField("");
+            Label lengthLabel = new Label("Enter the length of the pane:");
+            TextField lengthTextField = new TextField("");
             Label xLabel = new Label("Enter the X position of the pane:");
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the Y position of the pane:");
@@ -97,7 +97,7 @@ public class FarmDashboardController implements Initializable {
                 String name = textField.getText();
                 // how to read the input and turn it into a double: https://www.geeksforgeeks.org/double-parsedouble-method-in-java-with-examples/#
                 double width = Double.parseDouble(widthTextField.getText());
-                double height = Double.parseDouble(heightTextField.getText());
+                double length = Double.parseDouble(lengthTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
@@ -105,7 +105,7 @@ public class FarmDashboardController implements Initializable {
                     newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
-                    newPane.setPrefSize(width, height);
+                    newPane.setPrefSize(width, length);
                     newPane.setLayoutX(x);
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
@@ -117,7 +117,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(containerLabel, textField,priceLabel,pricetextField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(containerLabel, textField,priceLabel,pricetextField, widthLabel, widthTextField, lengthLabel, lengthTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -141,8 +141,8 @@ public class FarmDashboardController implements Initializable {
             TextField pricetextField = new TextField("");
             Label widthLabel = new Label("Enter the width of the pane:");
             TextField widthTextField = new TextField("");
-            Label heightLabel = new Label("Enter the height of the pane:");
-            TextField heightTextField = new TextField("");
+            Label lengthLabel = new Label("Enter the length of the pane:");
+            TextField lengthTextField = new TextField("");
             Label xLabel = new Label("Enter the X position of the pane:");
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the Y position of the pane:");
@@ -154,7 +154,7 @@ public class FarmDashboardController implements Initializable {
                 String name = textField.getText();
                 // how to read the input and turn it into a double: https://www.geeksforgeeks.org/double-parsedouble-method-in-java-with-examples/#
                 double width = Double.parseDouble(widthTextField.getText());
-                double height = Double.parseDouble(heightTextField.getText());
+                double length = Double.parseDouble(lengthTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
@@ -162,7 +162,7 @@ public class FarmDashboardController implements Initializable {
                     newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
-                    newPane.setPrefSize(width, height);
+                    newPane.setPrefSize(width, length);
                     newPane.setLayoutX(x);
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
@@ -174,7 +174,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, widthLabel, widthTextField, heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, widthLabel, widthTextField, lengthLabel, lengthTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -183,6 +183,10 @@ public class FarmDashboardController implements Initializable {
             stage.show();
 
         });
+
+
+
+
 
         // Deleting Pane
         delete_container.setOnAction(actionEvent -> {
@@ -199,6 +203,16 @@ public class FarmDashboardController implements Initializable {
                 Pane selectedPane = select_pane.getValue();
                 Parent parent = selectedPane.getParent();
                 ((Pane) parent).getChildren().remove(selectedPane);
+
+                // Remove the container from the TreeView
+                TreeItem<String> itemToRemove = findTreeItem(rootItem, selectedPane.getId());
+                if (itemToRemove != null) {
+                    rootItem.getChildren().remove(itemToRemove);
+                }
+
+                // Remove the container from the list of existing panes
+                existingPanes.remove(selectedPane);
+
                 stage.close();
             });
             vbox.getChildren().addAll(existingPanesLabel, select_pane, confirmButton);
@@ -210,8 +224,8 @@ public class FarmDashboardController implements Initializable {
             stage.show();
         });
 
-        // Changing Pane Name
-        change_name.setOnAction(actionEvent -> {
+        // Changing Container Vars
+        change_container.setOnAction(actionEvent -> {
             Stage stage = new Stage();
             stage.setTitle("Confirmation");
             VBox vbox = new VBox();
@@ -220,39 +234,57 @@ public class FarmDashboardController implements Initializable {
             TextField textField = new TextField("");
             Label priceLabel = new Label("Enter Price");
             TextField pricetextField = new TextField("");
-            Label widthLabel = new Label("Enter the width of the pane:");
+            Label widthLabel = new Label("Enter the new width of the pane:");
             TextField widthTextField = new TextField("");
-            Label heightLabel = new Label("Enter the height of the pane:");
-            TextField heightTextField = new TextField("");
-            Label xLabel = new Label("Enter the X position of the pane:");
+            Label lengthLabel = new Label("Enter the new length of the pane:");
+            TextField lengthTextField = new TextField("");
+            Label xLabel = new Label("Enter the new X position of the pane:");
             TextField xTextField = new TextField("");
-            Label yLabel = new Label("Enter the Y position of the pane:");
+            Label yLabel = new Label("Enter the new Y position of the pane:");
             TextField yTextField = new TextField("");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
             select_pane.getItems().addAll(existingPanes);
             select_pane.getSelectionModel().selectFirst();
+
             Button confirmButton = new Button("Confirm");
 
             confirmButton.setOnAction(e -> {
                 Pane selectedPane = select_pane.getValue();
+                double newWidth = Double.parseDouble(widthTextField.getText());
+                double newLength = Double.parseDouble(lengthTextField.getText());
+                double newX = Double.parseDouble(xTextField.getText());
+                double newY = Double.parseDouble(yTextField.getText());
+                double newPrice = Double.parseDouble(pricetextField.getText());
+
                 String name = textField.getText();
                 if (!name.isEmpty()) {
-                    Label label = (Label)selectedPane.getChildren().get(0);
+                    Label label = (Label) selectedPane.getChildren().get(0);
                     label.setText(name);
+
                     selectedPane.setStyle("-fx-border-color: red;");
-                    selectedPane.getChildren().add(containerLabel);
-                    selectedPane.getChildren().add(priceLabel);
-                    selectedPane.getChildren().add(widthLabel);
-                    selectedPane.getChildren().add(heightLabel);
-                    selectedPane.getChildren().add(xLabel);
-                    selectedPane.getChildren().add(yLabel);
-                    TreeItem<String> newBranchItem = new TreeItem<>(name);
-                    rootItem.getChildren().add(newBranchItem);
-                    existingPanes.add(selectedPane);
+                    selectedPane.setPrefSize(newWidth, newLength);
+                    selectedPane.setLayoutX(newX);
+                    selectedPane.setLayoutY(newY);
+
+                    // Update the name in the TreeView
+                    TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getId());
+                    if (selectedItem != null) {
+                        selectedItem.setValue(name); // Update the value of the TreeItem
+                    }
+
+                    // Update the name in the list of existing panes
+                    int index = existingPanes.indexOf(selectedPane);
+                    if (index != -1) {
+                        existingPanes.set(index, selectedPane);
+                    }
+
+                    selectedPane.setId(name); // Update the ID of the existing pane
+
                     stage.close();
                 }
             });
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField, confirmButton,priceLabel, pricetextField,widthLabel,widthTextField,heightLabel, heightTextField,xLabel,xTextField,yLabel,yTextField);
+
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField,widthLabel,widthTextField,lengthLabel, lengthTextField,xLabel,xTextField,yLabel,yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -260,6 +292,19 @@ public class FarmDashboardController implements Initializable {
             stage.setScene(scene);
             stage.show();
         });
+    }
+
+    private TreeItem<String> findTreeItem(TreeItem<String> root, String name) {
+        for (TreeItem<String> item : root.getChildren()) {
+            if (item.getValue().equals(name)) {
+                return item;
+            }
+            TreeItem<String> foundItem = findTreeItem(item, name);
+            if (foundItem != null) {
+                return foundItem;
+            }
+        }
+        return null;
     }
 
     public void selectItem(){
