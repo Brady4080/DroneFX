@@ -83,10 +83,12 @@ public class FarmDashboardController implements Initializable {
             TextField textField = new TextField("");
             Label priceLabel = new Label("Enter Price");
             TextField pricetextField = new TextField("");
-            Label widthLabel = new Label("Enter the width of the pane:");
-            TextField widthTextField = new TextField("");
             Label lengthLabel = new Label("Enter the length of the pane:");
             TextField lengthTextField = new TextField("");
+            Label widthLabel = new Label("Enter the width of the pane:");
+            TextField widthTextField = new TextField("");
+            Label heightLabel = new Label("Enter the height of the pane:");
+            TextField heightTextField = new TextField("");
             Label xLabel = new Label("Enter the X position of the pane:");
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the Y position of the pane:");
@@ -98,6 +100,7 @@ public class FarmDashboardController implements Initializable {
                 // how to read the input and turn it into a double: https://www.geeksforgeeks.org/double-parsedouble-method-in-java-with-examples/#
                 double width = Double.parseDouble(widthTextField.getText());
                 double length = Double.parseDouble(lengthTextField.getText());
+                double height = Double.parseDouble(heightTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
@@ -105,7 +108,7 @@ public class FarmDashboardController implements Initializable {
                     newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
-                    newPane.setPrefSize(width, length);
+                    newPane.setPrefSize(length, width);
                     newPane.setLayoutX(x);
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
@@ -117,7 +120,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(containerLabel, textField,priceLabel,pricetextField, widthLabel, widthTextField, lengthLabel, lengthTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(containerLabel, textField,priceLabel,pricetextField, lengthLabel, lengthTextField, widthLabel, widthTextField, heightLabel, heightTextField,  xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -139,10 +142,12 @@ public class FarmDashboardController implements Initializable {
             TextField textField = new TextField("");
             Label priceLabel = new Label("Enter Price");
             TextField pricetextField = new TextField("");
-            Label widthLabel = new Label("Enter the width of the pane:");
-            TextField widthTextField = new TextField("");
             Label lengthLabel = new Label("Enter the length of the pane:");
             TextField lengthTextField = new TextField("");
+            Label widthLabel = new Label("Enter the width of the pane:");
+            TextField widthTextField = new TextField("");
+            Label heightLabel = new Label("Enter the height of the pane:");
+            TextField heightTextField = new TextField("");
             Label xLabel = new Label("Enter the X position of the pane:");
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the Y position of the pane:");
@@ -153,8 +158,9 @@ public class FarmDashboardController implements Initializable {
                 Pane selectedPane = select_pane.getValue();
                 String name = textField.getText();
                 // how to read the input and turn it into a double: https://www.geeksforgeeks.org/double-parsedouble-method-in-java-with-examples/#
-                double width = Double.parseDouble(widthTextField.getText());
                 double length = Double.parseDouble(lengthTextField.getText());
+                double width = Double.parseDouble(widthTextField.getText());
+                double height = Double.parseDouble(heightTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 if (!name.isEmpty()) {
@@ -162,7 +168,7 @@ public class FarmDashboardController implements Initializable {
                     newPane.setId(name);
                     Label paneLabel = new Label(name);
                     newPane.setStyle("-fx-border-color: red;");
-                    newPane.setPrefSize(width, length);
+                    newPane.setPrefSize(length, width);
                     newPane.setLayoutX(x);
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
@@ -174,7 +180,7 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, widthLabel, widthTextField, lengthLabel, lengthTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, lengthLabel, lengthTextField,widthLabel, widthTextField,heightLabel, heightTextField, xLabel, xTextField, yLabel, yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
@@ -234,10 +240,12 @@ public class FarmDashboardController implements Initializable {
             TextField textField = new TextField("");
             Label priceLabel = new Label("Enter Price");
             TextField pricetextField = new TextField("");
-            Label widthLabel = new Label("Enter the new width of the pane:");
-            TextField widthTextField = new TextField("");
             Label lengthLabel = new Label("Enter the new length of the pane:");
             TextField lengthTextField = new TextField("");
+            Label widthLabel = new Label("Enter the new width of the pane:");
+            TextField widthTextField = new TextField("");
+            Label heightLabel = new Label("Enter the new height of the pane:");
+            TextField heightTextField = new TextField("");
             Label xLabel = new Label("Enter the new X position of the pane:");
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the new Y position of the pane:");
@@ -250,8 +258,9 @@ public class FarmDashboardController implements Initializable {
 
             confirmButton.setOnAction(e -> {
                 Pane selectedPane = select_pane.getValue();
-                double newWidth = Double.parseDouble(widthTextField.getText());
                 double newLength = Double.parseDouble(lengthTextField.getText());
+                double newWidth = Double.parseDouble(widthTextField.getText());
+                double newHeight = Double.parseDouble(heightTextField.getText());
                 double newX = Double.parseDouble(xTextField.getText());
                 double newY = Double.parseDouble(yTextField.getText());
                 double newPrice = Double.parseDouble(pricetextField.getText());
@@ -262,7 +271,7 @@ public class FarmDashboardController implements Initializable {
                     label.setText(name);
 
                     selectedPane.setStyle("-fx-border-color: red;");
-                    selectedPane.setPrefSize(newWidth, newLength);
+                    selectedPane.setPrefSize(newLength, newWidth);
                     selectedPane.setLayoutX(newX);
                     selectedPane.setLayoutY(newY);
 
@@ -284,11 +293,11 @@ public class FarmDashboardController implements Initializable {
                 }
             });
 
-            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField,widthLabel,widthTextField,lengthLabel, lengthTextField,xLabel,xTextField,yLabel,yTextField, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, containerLabel, textField,priceLabel, pricetextField, lengthLabel, lengthTextField, widthLabel, widthTextField,heightLabel, heightTextField,xLabel,xTextField,yLabel,yTextField, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
-            Scene scene = new Scene(vbox, 700, 500);
+            Scene scene = new Scene(vbox, 700, 600);
             stage.setScene(scene);
             stage.show();
         });
