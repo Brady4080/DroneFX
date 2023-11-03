@@ -172,9 +172,21 @@ public class FarmDashboardController implements Initializable {
                     newPane.setLayoutX(x);
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
+
+
+                    // Add the newPane to the selectedPane
                     selectedPane.getChildren().add(newPane);
-                    TreeItem<String> newBranchItem = new TreeItem<>(name);
-                    rootItem.getChildren().add(newBranchItem);
+
+                    // Create a new TreeItem for the added item
+                    TreeItem<String> newItem = new TreeItem<>(name);
+
+                    // Find the TreeItem for the selectedPane and add the new item to it
+                    TreeItem<String> selectedPaneItem = findTreeItem(rootItem, selectedPane.getId());
+                    if (selectedPaneItem != null) {
+                        selectedPaneItem.getChildren().add(newItem);
+                    }
+
+
                     existingPanes.add(newPane);
                     stage.close();
                 }
@@ -184,7 +196,7 @@ public class FarmDashboardController implements Initializable {
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 
-            Scene scene = new Scene(vbox, 700, 500);
+            Scene scene = new Scene(vbox, 700, 600);
             stage.setScene(scene);
             stage.show();
 
