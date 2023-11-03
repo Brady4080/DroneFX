@@ -21,7 +21,7 @@
                      <Button fx:id="add_container" layoutX="20.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="New Container" />
                      <Button fx:id="existing_container" layoutX="20.0" layoutY="365.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Add Container to Existing Container" />
                      <Button fx:id="delete_container" layoutX="20.0" layoutY="405.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Delete Container" />
-                     <Button fx:id="change_name" layoutX="160.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Change Name" />
+                     <Button fx:id="change_container" layoutX="160.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Change Container" />
                   </children>
                </AnchorPane>
                <SplitPane dividerPositions="0.581081081081081" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
