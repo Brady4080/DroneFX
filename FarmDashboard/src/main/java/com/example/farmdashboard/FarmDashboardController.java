@@ -46,11 +46,11 @@ public class FarmDashboardController implements Initializable {
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
-        ArrayList<PaneWithDimensions> existingPanes = new ArrayList<>();
-        existingPanes.add(new PaneWithDimensions(barn, 636.0, 436.0, 0));
-        existingPanes.add(new PaneWithDimensions(cattle, 28.0, 99.0, 0));
-        existingPanes.add(new PaneWithDimensions(drone_pane, 13.0, 13.0, 0));
-        existingPanes.add(new PaneWithDimensions(command_center, 375.0, 0, 0));
+        ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
+        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0));
+        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0));
+        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0));
+        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0));
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         root_pane.setStyle("-fx-border-color: blue;");
@@ -122,7 +122,7 @@ public class FarmDashboardController implements Initializable {
                     root_pane.getChildren().add(newPane);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
-                    existingPanes.add(new PaneWithDimensions(newPane, width, length, height));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height));
                     stage.close();
                 }
             });
@@ -143,8 +143,8 @@ public class FarmDashboardController implements Initializable {
             VBox vbox = new VBox();
             Label existingPanesLabel = new Label("Select From Existing Panes");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            for (PaneWithDimensions paneWithDimensions : existingPanes) {
-                select_pane.getItems().add(paneWithDimensions.getPane());
+            for (PaneDimensions paneDim : existingPanes) {
+                select_pane.getItems().add(paneDim.getPane());
             }
             select_pane.getSelectionModel().selectFirst();
             Label containerLabel = new Label("Enter Container Name");
@@ -196,7 +196,7 @@ public class FarmDashboardController implements Initializable {
                     }
 
 
-                    existingPanes.add(new PaneWithDimensions(newPane, width, length, height));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height));
                     stage.close();
                 }
             });
@@ -218,8 +218,8 @@ public class FarmDashboardController implements Initializable {
             VBox vbox = new VBox();
             Label existingPanesLabel = new Label("Select From Existing Panes");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            for (PaneWithDimensions paneWithDimensions : existingPanes) {
-                select_pane.getItems().add(paneWithDimensions.getPane());
+            for (PaneDimensions paneDim : existingPanes) {
+                select_pane.getItems().add(paneDim.getPane());
             }
             select_pane.getSelectionModel().selectFirst();
             Button confirmButton = new Button("Delete Container");
@@ -270,8 +270,8 @@ public class FarmDashboardController implements Initializable {
             Label yLabel = new Label("Enter the new Y position of the pane:");
             TextField yTextField = new TextField("");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            for (PaneWithDimensions paneWithDimensions : existingPanes) {
-                select_pane.getItems().add(paneWithDimensions.getPane());
+            for (PaneDimensions paneDim : existingPanes) {
+                select_pane.getItems().add(paneDim.getPane());
             }
             select_pane.getSelectionModel().selectFirst();
 
@@ -305,8 +305,8 @@ public class FarmDashboardController implements Initializable {
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        for (PaneWithDimensions paneWithDimensions : existingPanes) {
-                            select_pane.getItems().add(paneWithDimensions.getPane());
+                        for (PaneDimensions paneDim : existingPanes) {
+                            select_pane.getItems().add(paneDim.getPane());
                         }
                     }
 
@@ -326,22 +326,92 @@ public class FarmDashboardController implements Initializable {
         });
 
         launch_drone.setOnAction(actionEvent -> {
-            System.out.println("Launching drone demo...");
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            VBox vbox = new VBox();
+            Label existingPanesLabel = new Label("Select From Existing Panes");
+            Label choice1 = new Label("Starting Spot");
+            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            Label choice2 = new Label("Destination");
+            ChoiceBox<Pane> select_pane2 = new ChoiceBox<>();
+            for (PaneDimensions paneDim : existingPanes) {
+                select_pane.getItems().add(paneDim.getPane());
+                select_pane2.getItems().add(paneDim.getPane());
+            }
+            select_pane.getSelectionModel().selectFirst();
+            select_pane2.getSelectionModel().selectFirst();
+            Button confirmButton = new Button("Fly To");
 
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    TelloFlight.flight();
-                    return null;
+            confirmButton.setOnAction(e -> {
+                Pane selectedPane1 = select_pane.getValue();
+                Pane selectedPane2 = select_pane2.getValue();
+
+                PaneDimensions selectedPaneDim1 = null;
+                PaneDimensions selectedPaneDim2 = null;
+
+                for (PaneDimensions paneDim : existingPanes) {
+                    if (paneDim.getPane() == selectedPane1) {
+                        selectedPaneDim1 = paneDim;
+                    }
+                    if (paneDim.getPane() == selectedPane2) {
+                        selectedPaneDim2 = paneDim;
+                    }
+
+                    if (selectedPaneDim1 != null && selectedPaneDim2 != null) {
+                        break;
+                    }
                 }
-            };
 
-            task.setOnSucceeded(event -> {
-                System.out.println("Done launching drone demo!");
-                // Update the UI if needed
+                if (selectedPaneDim1 != null && selectedPaneDim2 != null) {
+                    double width1 = selectedPaneDim1.getWidth();
+                    double length1 = selectedPaneDim1.getLength();
+                    double height1 = selectedPaneDim1.getHeight();
+
+                    double width2 = selectedPaneDim2.getWidth();
+                    double length2 = selectedPaneDim2.getLength();
+                    double height2 = selectedPaneDim2.getHeight();
+
+                    System.out.println("Pane 1 - Width: " + width1 + ", Length: " + length1 + ", Height: " + height1);
+                    System.out.println("Pane 2 - Width: " + width2 + ", Length: " + length2 + ", Height: " + height2);
+
+                    double widthDist = width1 - width2;
+                    double lengthDist = length2 - length1;
+
+                    int pixelWidth = (int) widthDist;
+                    int pixelLength = (int) lengthDist;
+
+                    TelloFlight.getDist(pixelWidth, pixelLength, 0);
+
+                    System.out.println(widthDist);
+                    System.out.println(lengthDist);
+
+                    System.out.println("Launching drone demo...");
+
+                    Task<Void> task = new Task<>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            TelloFlight.flight();
+                            return null;
+                        }
+                    };
+
+                    task.setOnSucceeded(event -> {
+                        System.out.println("Done launching drone demo!");
+                        // Update the UI if needed
+                    });
+
+                    new Thread(task).start();
+                }
+
+                stage.close();
             });
+            vbox.getChildren().addAll(existingPanesLabel, choice1, select_pane, choice2, select_pane2, confirmButton);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(10);
 
-            new Thread(task).start();
+            Scene scene = new Scene(vbox, 700, 500);
+            stage.setScene(scene);
+            stage.show();
         });
 
     }
@@ -359,13 +429,14 @@ public class FarmDashboardController implements Initializable {
         return null;
     }
 
-    class PaneWithDimensions {
+    // Used to store the pane name and location etc
+    class PaneDimensions {
         private Pane pane;
         private double width;
         private double length;
         private double height;
 
-        public PaneWithDimensions(Pane pane, double width, double length, double height) {
+        public PaneDimensions(Pane pane, double width, double length, double height) {
             this.pane = pane;
             this.width = width;
             this.length = length;
