@@ -1,0 +1,53 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FarmDashboard:jar">
+    <output-path>$PROJECT_DIR$/target/artifacts/FarmDashboard_jar</output-path>
+    <root id="archive" name="FarmDashboard.jar">
+      <element id="module-output" name="FarmDashboard" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/20.0.1/javafx-controls-20.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/20.0.1/javafx-base-20.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/20.0.1/javafx-graphics-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/20.0.1/javafx-controls-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/20.0.1/javafx-graphics-20.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/20.0.1/javafx-base-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/javacv/1.5.7/javacv-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/openblas/0.3.19-1.5.7/openblas-0.3.19-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/opencv/4.5.5-1.5.7/opencv-4.5.5-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/ffmpeg/5.0-1.5.7/ffmpeg-5.0-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/flycapture/2.13.3.31-1.5.7/flycapture-2.13.3.31-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/libdc1394/2.2.6-1.5.7/libdc1394-2.2.6-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/libfreenect/0.5.7-1.5.7/libfreenect-0.5.7-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/libfreenect2/0.2.0-1.5.7/libfreenect2-0.2.0-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/librealsense/1.12.4-1.5.7/librealsense-1.12.4-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/librealsense2/2.50.0-1.5.7/librealsense2-2.50.0-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/videoinput/0.200-1.5.7/videoinput-0.200-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/artoolkitplus/2.3.1-1.5.7/artoolkitplus-2.3.1-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/flandmark/1.07-1.5.7/flandmark-1.07-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/leptonica/1.82.0-1.5.7/leptonica-1.82.0-1.5.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/tesseract/5.0.1-1.5.7/tesseract-5.0.1-1.5.7.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:20.0.1" />
+      <element id="library" level="project" name="bytedeco.javacv" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:20.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:20.0.1" />
+      <element id="module-source" name="FarmDashboard" />
+      <element id="dir-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2" />
+      <element id="dir-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx-swt.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.base.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.controls.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.fxml.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.graphics.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.media.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.properties" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.swing.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/lib/javafx.web.jar" />
+    </root>
+  </artifact>
+</component>
