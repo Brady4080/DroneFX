@@ -1,6 +1,8 @@
 package com.example.farmdashboard;
 
 import javafx.fxml.FXML;
+
+import java.io.IOException;
 import java.net.URL;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import java.util.List;
+import javafx.concurrent.Task;
+import main.java.surelyhuman.jdrone.control.physical.tello.TelloFlight;
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -37,6 +41,8 @@ public class FarmDashboardController implements Initializable {
     private Button delete_container;
     @FXML
     private Button change_container;
+    @FXML
+    private Button launch_drone;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
@@ -202,10 +208,6 @@ public class FarmDashboardController implements Initializable {
 
         });
 
-
-
-
-
         // Deleting Pane
         delete_container.setOnAction(actionEvent -> {
             Stage stage = new Stage();
@@ -313,6 +315,26 @@ public class FarmDashboardController implements Initializable {
             stage.setScene(scene);
             stage.show();
         });
+
+        launch_drone.setOnAction(actionEvent -> {
+            System.out.println("Launching drone demo...");
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    TelloFlight.flight();
+                    return null;
+                }
+            };
+
+            task.setOnSucceeded(event -> {
+                System.out.println("Done launching drone demo!");
+                // Update the UI if needed
+            });
+
+            new Thread(task).start();
+        });
+
     }
 
     private TreeItem<String> findTreeItem(TreeItem<String> root, String name) {
