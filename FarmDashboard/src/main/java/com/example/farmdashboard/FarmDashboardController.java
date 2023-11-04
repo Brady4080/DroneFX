@@ -47,12 +47,13 @@ public class FarmDashboardController implements Initializable {
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
         ArrayList<PaneWithDimensions> existingPanes = new ArrayList<>();
-        existingPanes.add(new PaneWithDimensions(barn, 969.0, 969.0, 0));
-        existingPanes.add(new PaneWithDimensions(cattle, 101.0, 92.0, 0));
-        existingPanes.add(new PaneWithDimensions(drone_pane, 55.0, 55.0, 0));
-        existingPanes.add(new PaneWithDimensions(command_center, 1069.0, 14.0, 0));
+        existingPanes.add(new PaneWithDimensions(barn, 636.0, 436.0, 0));
+        existingPanes.add(new PaneWithDimensions(cattle, 28.0, 99.0, 0));
+        existingPanes.add(new PaneWithDimensions(drone_pane, 13.0, 13.0, 0));
+        existingPanes.add(new PaneWithDimensions(command_center, 375.0, 0, 0));
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
+        root_pane.setStyle("-fx-border-color: blue;");
         barn.setStyle("-fx-border-color: red;");
         cattle.setStyle("-fx-border-color: red;");
         drone_pane.setStyle("-fx-border-color: red;");
@@ -121,7 +122,7 @@ public class FarmDashboardController implements Initializable {
                     root_pane.getChildren().add(newPane);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
-                    existingPanes.add(newPane);
+                    existingPanes.add(new PaneWithDimensions(newPane, width, length, height));
                     stage.close();
                 }
             });
@@ -142,7 +143,9 @@ public class FarmDashboardController implements Initializable {
             VBox vbox = new VBox();
             Label existingPanesLabel = new Label("Select From Existing Panes");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            select_pane.getItems().addAll(existingPanes);
+            for (PaneWithDimensions paneWithDimensions : existingPanes) {
+                select_pane.getItems().add(paneWithDimensions.getPane());
+            }
             select_pane.getSelectionModel().selectFirst();
             Label containerLabel = new Label("Enter Container Name");
             TextField textField = new TextField("");
@@ -193,7 +196,7 @@ public class FarmDashboardController implements Initializable {
                     }
 
 
-                    existingPanes.add(newPane);
+                    existingPanes.add(new PaneWithDimensions(newPane, width, length, height));
                     stage.close();
                 }
             });
@@ -215,7 +218,9 @@ public class FarmDashboardController implements Initializable {
             VBox vbox = new VBox();
             Label existingPanesLabel = new Label("Select From Existing Panes");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            select_pane.getItems().addAll(existingPanes);
+            for (PaneWithDimensions paneWithDimensions : existingPanes) {
+                select_pane.getItems().add(paneWithDimensions.getPane());
+            }
             select_pane.getSelectionModel().selectFirst();
             Button confirmButton = new Button("Delete Container");
 
@@ -265,7 +270,9 @@ public class FarmDashboardController implements Initializable {
             Label yLabel = new Label("Enter the new Y position of the pane:");
             TextField yTextField = new TextField("");
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
-            select_pane.getItems().addAll(existingPanes);
+            for (PaneWithDimensions paneWithDimensions : existingPanes) {
+                select_pane.getItems().add(paneWithDimensions.getPane());
+            }
             select_pane.getSelectionModel().selectFirst();
 
             Button confirmButton = new Button("Confirm");
@@ -298,7 +305,9 @@ public class FarmDashboardController implements Initializable {
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        existingPanes.set(index, selectedPane);
+                        for (PaneWithDimensions paneWithDimensions : existingPanes) {
+                            select_pane.getItems().add(paneWithDimensions.getPane());
+                        }
                     }
 
                     selectedPane.setId(name); // Update the ID of the existing pane
