@@ -182,7 +182,6 @@ public class FarmDashboardController implements Initializable {
                     newPane.setLayoutY(y);
                     newPane.getChildren().add(paneLabel);
 
-
                     // Add the newPane to the selectedPane
                     selectedPane.getChildren().add(newPane);
 
@@ -194,7 +193,7 @@ public class FarmDashboardController implements Initializable {
                     if (selectedPaneItem != null) {
                         selectedPaneItem.getChildren().add(newItem);
                     }
-
+                    
 
                     existingPanes.add(new PaneDimensions(newPane, width, length, height));
                     stage.close();
@@ -227,16 +226,22 @@ public class FarmDashboardController implements Initializable {
             confirmButton.setOnAction(e -> {
                 Pane selectedPane = select_pane.getValue();
                 Parent parent = selectedPane.getParent();
-                ((Pane) parent).getChildren().remove(selectedPane);
+
+                if (parent instanceof Pane) {
+                    ((Pane) parent).getChildren().remove(selectedPane);
+
+                    // Remove the container from the list of existing panes
+                    existingPanes.removeIf(paneWithDimensions -> paneWithDimensions.getPane() == selectedPane);
+                }
 
                 // Remove the container from the TreeView
                 TreeItem<String> itemToRemove = findTreeItem(rootItem, selectedPane.getId());
                 if (itemToRemove != null) {
-                    rootItem.getChildren().remove(itemToRemove);
+                    TreeItem<String> parentItem = itemToRemove.getParent();
+                    if (parentItem != null) {
+                        parentItem.getChildren().remove(itemToRemove);
+                    }
                 }
-
-                // Remove the container from the list of existing panes
-                existingPanes.remove(selectedPane);
 
                 stage.close();
             });
@@ -274,6 +279,26 @@ public class FarmDashboardController implements Initializable {
                 select_pane.getItems().add(paneDim.getPane());
             }
             select_pane.getSelectionModel().selectFirst();
+
+            // When a container is selected from the list, populate the text fields with its attributes
+            select_pane.setOnAction(e -> {
+                Pane selectedPane = select_pane.getValue();
+                if (selectedPane != null) {
+                    textField.setText(selectedPane.getId());
+
+
+                    lengthTextField.setText(Double.toString(selectedPane.getPrefWidth())); // Width
+                    widthTextField.setText(Double.toString(selectedPane.getPrefHeight()));
+                    xTextField.setText(Double.toString(selectedPane.getLayoutX()));
+                    yTextField.setText(Double.toString(selectedPane.getLayoutY()));
+
+                    //priceTextField.setText("");
+                    heightTextField.setText("");
+                    // need to do for price and height
+
+                }
+            });
+
 
             Button confirmButton = new Button("Confirm");
 
