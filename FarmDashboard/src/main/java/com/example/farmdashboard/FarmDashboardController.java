@@ -46,11 +46,11 @@ public class FarmDashboardController implements Initializable {
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
-        ArrayList<Pane> existingPanes = new ArrayList<>();
-        existingPanes.add(barn);
-        existingPanes.add(cattle);
-        existingPanes.add(drone_pane);
-        existingPanes.add(command_center);
+        ArrayList<PaneWithDimensions> existingPanes = new ArrayList<>();
+        existingPanes.add(new PaneWithDimensions(barn, 969.0, 969.0, 0));
+        existingPanes.add(new PaneWithDimensions(cattle, 101.0, 92.0, 0));
+        existingPanes.add(new PaneWithDimensions(drone_pane, 55.0, 55.0, 0));
+        existingPanes.add(new PaneWithDimensions(command_center, 1069.0, 14.0, 0));
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         barn.setStyle("-fx-border-color: red;");
@@ -350,8 +350,41 @@ public class FarmDashboardController implements Initializable {
         return null;
     }
 
+    class PaneWithDimensions {
+        private Pane pane;
+        private double width;
+        private double length;
+        private double height;
+
+        public PaneWithDimensions(Pane pane, double width, double length, double height) {
+            this.pane = pane;
+            this.width = width;
+            this.length = length;
+            this.height = height;
+        }
+
+        public Pane getPane() {
+            return pane;
+        }
+
+        public double getWidth() {
+            return width;
+        }
+
+        public double getLength() {
+            return length;
+        }
+
+        public double getHeight() {
+            return height;
+        }
+    }
+
+
+
     public void selectItem(){
 
     }
 
 }
+

@@ -13,9 +13,7 @@ public class TelloFlight {
         tello.hoverInPlace(10);
         tello.takeoff();
 
-        public static void getCoords() {
-
-        }
+        //getCoords(width, length, height);
 
 
 
