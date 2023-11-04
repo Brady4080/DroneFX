@@ -183,7 +183,11 @@ public class TelloDrone extends MultiRotorDrone {
 	}
 
 	@Override
-	public void flyBackward(int back) throws IOException {
+	public void flyBackward(int pixels) throws IOException {
+		int distanceInFeet = pixels / Constants.PIXELS_TO_ONE_MODEL_FOOT;
+		// Calculate the distance in centimeters
+		int back = distanceInFeet * Constants.CENTIMETERS_PER_MODEL_FOOT;
+
 		if (back <= minDist) this.controller.sendCommand("back " + minDist);
 		else if (back > maxDist) {
 			this.controller.sendCommand("back " + maxDist);
@@ -193,7 +197,11 @@ public class TelloDrone extends MultiRotorDrone {
 	}
 
 	@Override
-	public void flyLeft(int left) throws IOException {
+	public void flyLeft(int pixels) throws IOException {
+		int distanceInFeet = pixels / Constants.PIXELS_TO_ONE_MODEL_FOOT;
+		// Calculate the distance in centimeters
+		int left = distanceInFeet * Constants.CENTIMETERS_PER_MODEL_FOOT;
+
 		if (left <= minDist) this.controller.sendCommand("left " + minDist);
 		else if (left > maxDist) {
 			this.controller.sendCommand("left " + maxDist);
@@ -203,7 +211,11 @@ public class TelloDrone extends MultiRotorDrone {
 	}
 
 	@Override
-	public void flyRight(int right) throws IOException {
+	public void flyRight(int pixels) throws IOException {
+		int distanceInFeet = pixels / Constants.PIXELS_TO_ONE_MODEL_FOOT;
+		// Calculate the distance in centimeters
+		int right = distanceInFeet * Constants.CENTIMETERS_PER_MODEL_FOOT;
+
 		if (right <= minDist) this.controller.sendCommand("right " + minDist);
 		else if (right > maxDist) {
 			this.controller.sendCommand("right " + maxDist);

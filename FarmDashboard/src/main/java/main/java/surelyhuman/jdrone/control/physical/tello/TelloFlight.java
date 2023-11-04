@@ -23,6 +23,7 @@ public class TelloFlight {
         //tello.missionPadOn();
         //tello.hoverInPlace(10);
         tello.takeoff();
+
         /*
         int initialYaw = tello.getAttitudeYaw();
         int yawDiff = 0 - initialYaw;
@@ -34,8 +35,8 @@ public class TelloFlight {
             int ccDiff = -yawDiff;
             tello.turnCW(ccDiff);
         }
-
         */
+
         if (width < 0) {
             tello.flyLeft(-1 * width);
         } else if (width == 0){
