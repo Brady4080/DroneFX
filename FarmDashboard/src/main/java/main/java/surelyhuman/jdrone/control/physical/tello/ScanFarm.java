@@ -81,7 +81,7 @@ public class ScanFarm {
         // Return to command center
 
         double ccLocWtemp = ccWidth - 750;
-        double ccLocLtemp = ccLength - 550;
+        double ccLocLtemp = 550 - ccLength;
 
         int ccLocW = (int) ccLocWtemp;
         int ccLocL = (int) ccLocLtemp;
@@ -103,7 +103,6 @@ public class ScanFarm {
         tello.land();
         tello.end();
     }
-
 
     public static void main(String[] args) throws InterruptedException, IOException {
         flight();
