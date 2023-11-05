@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="FarmDashboard:jar">
-    <output-path>$PROJECT_DIR$/target/artifacts/FarmDashboard_jar</output-path>
+    <output-path>$PROJECT_DIR$/JarLauncher</output-path>
     <root id="archive" name="FarmDashboard.jar">
       <element id="module-output" name="FarmDashboard" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1-win.jar" path-in-jar="/" />
