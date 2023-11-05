@@ -19,6 +19,9 @@ import javafx.scene.Parent;
 import java.util.List;
 import javafx.concurrent.Task;
 import main.java.surelyhuman.jdrone.control.physical.tello.TelloFlight;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
+
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -43,6 +46,7 @@ public class FarmDashboardController implements Initializable {
     private Button change_container;
     @FXML
     private Button launch_drone;
+    private Label priceLabel;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
@@ -436,6 +440,45 @@ public class FarmDashboardController implements Initializable {
             stage.show();
         });
 
+
+        // Create a Label to display the price
+        Label priceLabel = new Label();
+        priceLabel.setStyle("-fx-font-weight: bold;");
+        root_pane.getChildren().add(priceLabel);
+
+        // Add a selection listener to the TreeView
+        tree_view.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                TreeItem<String> selectedContainer = newValue;
+                String containerName = selectedContainer.getValue();
+                double price = 0.0; // Default price
+
+                // Check if the selected item is a container (not the root item)
+                if (!containerName.equals("Root")) {
+                    // Find the corresponding PaneDimensions for the selected container
+                    PaneDimensions selectedPaneDim = findPaneDimensionsByName(existingPanes, containerName);
+                    if (selectedPaneDim != null) {
+                        price = selectedPaneDim.getPrice();
+                    }
+                } else {
+                    priceLabel.setText(""); // Clear the price label for non-container selections
+                    return;
+                }
+
+                // Update the price for premade containers
+                if (containerName.equals("Barn")) {
+                    price = 5000.0; // Set the price for Barn
+                } else if (containerName.equals("Cattle")) {
+                    price = 500.0; // Set the price for Cattle
+                } else if (containerName.equals("Command Center")) {
+                    price = 5000.0; // Set the price for Command Center
+                } else if (containerName.equals("Drone")) {
+                    price = 200.0; // Set the price for Drone
+                }
+
+                priceLabel.setText("Price: $" + price); // Display the price
+            }
+        });
     }
 
     private TreeItem<String> findTreeItem(TreeItem<String> root, String name) {
@@ -450,6 +493,19 @@ public class FarmDashboardController implements Initializable {
         }
         return null;
     }
+
+
+
+    // Helper method to find PaneDimensions by name
+    private PaneDimensions findPaneDimensionsByName(List<PaneDimensions> paneDimensionsList, String name) {
+        for (PaneDimensions paneDim : paneDimensionsList) {
+            if (paneDim.getPane().getId().equals(name)) {
+                return paneDim;
+            }
+        }
+        return null;
+    }
+
 
     // Used to store the pane name and location etc
     class PaneDimensions {
