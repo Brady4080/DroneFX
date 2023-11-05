@@ -478,8 +478,10 @@ public class FarmDashboardController implements Initializable {
                     double length1 = selectedPaneDim1.getLength();
                     double height1 = selectedPaneDim1.getHeight();
 
-                    System.out.println(width1);
-                    System.out.println(length1);
+                    int ccWidth = (int) width1;
+                    int ccLength = (int) length1;
+
+                    ScanFarm.ccLocation(ccWidth, ccLength, 0);
 
                     double width2 = selectedPaneDim2.getWidth();
                     double length2 = selectedPaneDim2.getLength();
