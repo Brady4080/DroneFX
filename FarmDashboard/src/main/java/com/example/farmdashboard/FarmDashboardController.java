@@ -51,11 +51,11 @@ public class FarmDashboardController implements Initializable {
         // storing a list of the panes
         ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
 
-        existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0));
-        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0));
-        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0));
-        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0));
-        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0));
+        existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0, 0));
+        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000));
+        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500));
+        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0,200));
+        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000));
 
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
