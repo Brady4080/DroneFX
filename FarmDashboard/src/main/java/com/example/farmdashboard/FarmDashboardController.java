@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import java.util.List;
 import javafx.concurrent.Task;
 import main.java.surelyhuman.jdrone.control.physical.tello.TelloFlight;
+import main.java.surelyhuman.jdrone.control.physical.tello.ScanFarm;
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -43,14 +44,19 @@ public class FarmDashboardController implements Initializable {
     private Button change_container;
     @FXML
     private Button launch_drone;
+    @FXML
+    private Button scan_farm;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
         ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
-        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000));
-        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500));
-        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200));
-        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000));
+
+        existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0));
+        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0));
+        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0));
+        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0));
+        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0));
+
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         root_pane.setStyle("-fx-border-color: blue;");
@@ -74,11 +80,11 @@ public class FarmDashboardController implements Initializable {
         TreeItem<String> rootItem = new TreeItem<>("Root");
         TreeItem<String> barn = new TreeItem<>("Barn");
         TreeItem<String> cattle = new TreeItem<>("Cattle");
-        TreeItem<String> command_center = new TreeItem<>("Command Center");
+        TreeItem<String> command_center_tree = new TreeItem<>("Command Center");
         TreeItem<String> drone_pane = new TreeItem<>("Drone");
         barn.getChildren().add(cattle);
-        command_center.getChildren().add(drone_pane);
-        rootItem.getChildren().addAll(barn, command_center);
+        command_center_tree.getChildren().add(drone_pane);
+        rootItem.getChildren().addAll(barn, command_center_tree);
         tree_view.setRoot(rootItem);
 
         // Create New Container Window
@@ -295,8 +301,6 @@ public class FarmDashboardController implements Initializable {
                     pricetextField.setText(Double.toString(selectedPane.getPrice()));
                 }
             });
-
-
             Button confirmButton = new Button("Confirm");
 
             confirmButton.setOnAction(e -> {
@@ -356,8 +360,8 @@ public class FarmDashboardController implements Initializable {
             ChoiceBox<Pane> select_pane = new ChoiceBox<>();
             Label choice2 = new Label("Destination");
             ChoiceBox<Pane> select_pane2 = new ChoiceBox<>();
+            select_pane.getItems().add(command_center);
             for (PaneDimensions paneDim : existingPanes) {
-                select_pane.getItems().add(paneDim.getPane());
                 select_pane2.getItems().add(paneDim.getPane());
             }
             select_pane.getSelectionModel().selectFirst();
@@ -389,12 +393,12 @@ public class FarmDashboardController implements Initializable {
                     double length1 = selectedPaneDim1.getLength();
                     double height1 = selectedPaneDim1.getHeight();
 
+                    System.out.println(width1);
+                    System.out.println(length1);
+
                     double width2 = selectedPaneDim2.getWidth();
                     double length2 = selectedPaneDim2.getLength();
                     double height2 = selectedPaneDim2.getHeight();
-
-                    System.out.println("Pane 1 - Width: " + width1 + ", Length: " + length1 + ", Height: " + height1);
-                    System.out.println("Pane 2 - Width: " + width2 + ", Length: " + length2 + ", Height: " + height2);
 
                     double widthDist = width1 - width2;
                     double lengthDist = length2 - length1;
@@ -427,7 +431,89 @@ public class FarmDashboardController implements Initializable {
 
                 stage.close();
             });
-            vbox.getChildren().addAll(existingPanesLabel, choice1, select_pane, choice2, select_pane2, confirmButton);
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, choice2, select_pane2, confirmButton);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(10);
+
+            Scene scene = new Scene(vbox, 700, 500);
+            stage.setScene(scene);
+            stage.show();
+        });
+
+        scan_farm.setOnAction(actionEvent -> {
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            VBox vbox = new VBox();
+            Label existingPanesLabel = new Label("Scan Farm");
+            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            ChoiceBox<Pane> select_pane2 = new ChoiceBox<>();
+            select_pane.getItems().add(command_center);
+            select_pane2.getItems().add(root_pane);
+            select_pane.getSelectionModel().selectFirst();
+            select_pane2.getSelectionModel().selectFirst();
+            Button confirmButton = new Button("Scan");
+
+            confirmButton.setOnAction(e -> {
+                Pane selectedPane1 = select_pane.getValue();
+                Pane selectedPane2 = select_pane2.getValue();
+
+                PaneDimensions selectedPaneDim1 = null;
+                PaneDimensions selectedPaneDim2 = null;
+
+                for (PaneDimensions paneDim : existingPanes) {
+                    if (paneDim.getPane() == selectedPane1) {
+                        selectedPaneDim1 = paneDim;
+                    }
+                    if (paneDim.getPane() == selectedPane2) {
+                        selectedPaneDim2 = paneDim;
+                    }
+
+                    if (selectedPaneDim1 != null && selectedPaneDim2 != null) {
+                        break;
+                    }
+                }
+
+                if (selectedPaneDim1 != null && selectedPaneDim2 != null) {
+                    double width1 = selectedPaneDim1.getWidth();
+                    double length1 = selectedPaneDim1.getLength();
+                    double height1 = selectedPaneDim1.getHeight();
+
+                    System.out.println(width1);
+                    System.out.println(length1);
+
+                    double width2 = selectedPaneDim2.getWidth();
+                    double length2 = selectedPaneDim2.getLength();
+                    double height2 = selectedPaneDim2.getHeight();
+
+                    double widthDist = width1 - width2;
+                    double lengthDist = length2 - length1;
+
+                    int pixelWidth = (int) widthDist;
+                    int pixelLength = (int) lengthDist;
+
+                    ScanFarm.getDist(pixelWidth, pixelLength, 0);
+
+                    System.out.println("Launching drone demo...");
+
+                    Task<Void> task = new Task<>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            ScanFarm.flight();
+                            return null;
+                        }
+                    };
+
+                    task.setOnSucceeded(event -> {
+                        System.out.println("Done launching drone demo!");
+                        // Update the UI if needed
+                    });
+
+                    new Thread(task).start();
+                }
+
+                stage.close();
+            });
+            vbox.getChildren().addAll(existingPanesLabel, select_pane, select_pane2, confirmButton);
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
 

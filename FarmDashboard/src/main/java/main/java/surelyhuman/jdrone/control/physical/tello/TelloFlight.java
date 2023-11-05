@@ -20,22 +20,7 @@ public class TelloFlight {
     public static void flight() throws InterruptedException, IOException {
         TelloDrone tello = new TelloDrone();
         tello.activateSDK();
-        //tello.missionPadOn();
-        //tello.hoverInPlace(10);
         tello.takeoff();
-
-        /*
-        int initialYaw = tello.getAttitudeYaw();
-        int yawDiff = 0 - initialYaw;
-
-        if(yawDiff > 0) {
-            tello.turnCW(yawDiff);
-        }
-        else {
-            int ccDiff = -yawDiff;
-            tello.turnCW(ccDiff);
-        }
-        */
 
         if (width < 0) {
             tello.flyLeft(-1 * width);
@@ -50,11 +35,6 @@ public class TelloFlight {
         } else {
             tello.flyForward(length);
         }
-
-
-        //tello.flyForward(100);
-        //tello.flyBackward(100);
-        //tello.turnCW(180);
 
         tello.land();
         tello.end();
