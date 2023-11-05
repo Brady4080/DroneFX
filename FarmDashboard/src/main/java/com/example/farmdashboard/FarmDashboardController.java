@@ -50,11 +50,13 @@ public class FarmDashboardController implements Initializable {
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
         ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
+
         existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0));
         existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0));
         existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0));
         existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0));
         existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0));
+
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         root_pane.setStyle("-fx-border-color: blue;");
@@ -114,6 +116,7 @@ public class FarmDashboardController implements Initializable {
                 double height = Double.parseDouble(heightTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
+                double price = Double.parseDouble(pricetextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
                     newPane.setId(name);
@@ -126,7 +129,7 @@ public class FarmDashboardController implements Initializable {
                     root_pane.getChildren().add(newPane);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price));
                     stage.close();
                 }
             });
@@ -176,6 +179,7 @@ public class FarmDashboardController implements Initializable {
                 double height = Double.parseDouble(heightTextField.getText());
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
+                double price = Double.parseDouble(pricetextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
                     newPane.setId(name);
@@ -199,7 +203,7 @@ public class FarmDashboardController implements Initializable {
                     }
                     
 
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price));
                     stage.close();
                 }
             });
@@ -278,53 +282,50 @@ public class FarmDashboardController implements Initializable {
             TextField xTextField = new TextField("");
             Label yLabel = new Label("Enter the new Y position of the pane:");
             TextField yTextField = new TextField("");
-            ChoiceBox<Pane> select_pane = new ChoiceBox<>();
+            ChoiceBox<PaneDimensions> select_pane = new ChoiceBox<>();
             for (PaneDimensions paneDim : existingPanes) {
-                select_pane.getItems().add(paneDim.getPane());
+                select_pane.getItems().add(paneDim);
             }
             select_pane.getSelectionModel().selectFirst();
 
             // When a container is selected from the list, populate the text fields with its attributes
             select_pane.setOnAction(e -> {
-                Pane selectedPane = select_pane.getValue();
+                PaneDimensions selectedPane = select_pane.getValue();
                 if (selectedPane != null) {
-                    textField.setText(selectedPane.getId());
-
-
-                    lengthTextField.setText(Double.toString(selectedPane.getPrefWidth())); // Width
-                    widthTextField.setText(Double.toString(selectedPane.getPrefHeight()));
-                    xTextField.setText(Double.toString(selectedPane.getLayoutX()));
-                    yTextField.setText(Double.toString(selectedPane.getLayoutY()));
-
-                    //priceTextField.setText("");
-                    heightTextField.setText("");
-                    // need to do for price and height
-
+                    textField.setText(selectedPane.getPane().getId());
+                    lengthTextField.setText(Double.toString(selectedPane.getLength()));
+                    widthTextField.setText(Double.toString(selectedPane.getWidth()));
+                    heightTextField.setText(Double.toString(selectedPane.getHeight()));
+                    xTextField.setText(Double.toString(selectedPane.getPane().getLayoutX()));
+                    yTextField.setText(Double.toString(selectedPane.getPane().getLayoutY()));
+                    pricetextField.setText(Double.toString(selectedPane.getPrice()));
                 }
             });
             Button confirmButton = new Button("Confirm");
 
             confirmButton.setOnAction(e -> {
-                Pane selectedPane = select_pane.getValue();
+                PaneDimensions selectedPane = select_pane.getValue();
                 double newLength = Double.parseDouble(lengthTextField.getText());
                 double newWidth = Double.parseDouble(widthTextField.getText());
                 double newHeight = Double.parseDouble(heightTextField.getText());
                 double newX = Double.parseDouble(xTextField.getText());
                 double newY = Double.parseDouble(yTextField.getText());
                 double newPrice = Double.parseDouble(pricetextField.getText());
-
                 String name = textField.getText();
+
                 if (!name.isEmpty()) {
-                    Label label = (Label) selectedPane.getChildren().get(0);
+                    Label label = (Label) selectedPane.getPane().getChildren().get(0);
                     label.setText(name);
 
-                    selectedPane.setStyle("-fx-border-color: red;");
-                    selectedPane.setPrefSize(newLength, newWidth);
-                    selectedPane.setLayoutX(newX);
-                    selectedPane.setLayoutY(newY);
+                    selectedPane.getPane().setStyle("-fx-border-color: red;");
+                    selectedPane.getPane().setPrefSize(newLength, newWidth);
+                    selectedPane.getPane().setLayoutX(newX);
+                    selectedPane.getPane().setLayoutY(newY);
+                    selectedPane.setHeight(newHeight); // Update the height
+                    selectedPane.setPrice(newPrice); // Update the price
 
                     // Update the name in the TreeView
-                    TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getId());
+                    TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getPane().getId());
                     if (selectedItem != null) {
                         selectedItem.setValue(name); // Update the value of the TreeItem
                     }
@@ -332,12 +333,10 @@ public class FarmDashboardController implements Initializable {
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        for (PaneDimensions paneDim : existingPanes) {
-                            select_pane.getItems().add(paneDim.getPane());
-                        }
+                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice));
                     }
 
-                    selectedPane.setId(name); // Update the ID of the existing pane
+                    selectedPane.getPane().setId(name); // Update the ID of the existing pane
 
                     stage.close();
                 }
@@ -544,12 +543,15 @@ public class FarmDashboardController implements Initializable {
         private double width;
         private double length;
         private double height;
+        private double price;
 
-        public PaneDimensions(Pane pane, double width, double length, double height) {
+
+        public PaneDimensions(Pane pane, double width, double length, double height,double price) {
             this.pane = pane;
             this.width = width;
             this.length = length;
             this.height = height;
+            this.price = price;
         }
 
         public Pane getPane() {
@@ -566,6 +568,19 @@ public class FarmDashboardController implements Initializable {
 
         public double getHeight() {
             return height;
+        }
+        public void setHeight(double height) {
+            this.height = height;
+        }
+        public double getPrice() {
+            return price;
+        }
+        public void setPrice(double price) {
+            this.price = price;
+        }
+        @Override
+        public String toString() {
+            return pane.getId(); // Display the ID of the Pane
         }
     }
 
