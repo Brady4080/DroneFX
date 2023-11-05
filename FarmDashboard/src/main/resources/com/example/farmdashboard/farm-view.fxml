@@ -34,7 +34,7 @@
                                  <Font size="18.0" />
                               </font>
                            </Label>
-                           <Button layoutX="19.0" layoutY="114.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Scan Farm" />
+                           <Button fx:id="scan_farm" layoutX="19.0" layoutY="114.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Scan Farm" />
                            <Button layoutX="19.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Vist Item/Container" />
                            <Button layoutX="159.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Go Home" />
                         </children>
