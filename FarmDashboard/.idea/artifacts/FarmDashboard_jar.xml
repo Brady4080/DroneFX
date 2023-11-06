@@ -28,7 +28,6 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/leptonica/1.82.0-1.5.7/leptonica-1.82.0-1.5.7.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/bytedeco/tesseract/5.0.1-1.5.7/tesseract-5.0.1-1.5.7.jar" path-in-jar="/" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:20.0.1" />
-      <element id="library" level="project" name="bytedeco.javacv" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-base:20.0.1" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:20.0.1" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:20.0.1" />
