@@ -59,6 +59,8 @@ public class TelloFlight {
         tello.turnCW(90);
         tello.turnCW(90);
 
+        tello.hoverInPlace(10);
+
         // Return to command center
 
         double ccLocWtemp = ccWidth - tdWidth;
