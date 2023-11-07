@@ -46,31 +46,37 @@ public class ScanFarm {
         //pass 1
         tello.flyForward(400);
         tello.flyLeft(100);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         // pass 2
         tello.flyForward(400);
         tello.flyRight(100);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         // pass 3
         tello.flyForward(400);
         tello.flyLeft(100);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         // pass 4
         tello.flyForward(400);
         tello.flyRight(100);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         //pass 5
         tello.flyForward(400);
         tello.flyLeft(100);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         // pass 6
         tello.flyForward(400);
-        tello.turnCW(180);
+        tello.turnCW(90);
+        tello.turnCW(90);
 
         // 700 500 0
         // Return to command center
