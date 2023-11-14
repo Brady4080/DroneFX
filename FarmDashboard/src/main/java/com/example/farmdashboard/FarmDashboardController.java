@@ -14,13 +14,13 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import java.util.List;
 import javafx.concurrent.Task;
 import main.java.surelyhuman.jdrone.control.physical.tello.TelloFlight;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 
 public class FarmDashboardController implements Initializable {
@@ -46,7 +46,8 @@ public class FarmDashboardController implements Initializable {
     private Button change_container;
     @FXML
     private Button launch_drone;
-    private Label priceLabel;
+    @FXML
+    private VBox infoPane;
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
@@ -441,44 +442,51 @@ public class FarmDashboardController implements Initializable {
         });
 
 
-        // Create a Label to display the price
-        Label priceLabel = new Label();
-        priceLabel.setStyle("-fx-font-weight: bold;");
-        root_pane.getChildren().add(priceLabel);
 
-        // Add a selection listener to the TreeView
-        tree_view.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                TreeItem<String> selectedContainer = newValue;
-                String containerName = selectedContainer.getValue();
-                double price = 0.0; // Default price
+// Add a listener to the selection property of the TreeView
+        tree_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+            @Override
+            public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue,
+                                TreeItem<String> newValue) {
+                if (newValue != null) {
+                    // Get the selected item's ID (name) from the TreeView
+                    String selectedPaneName = newValue.getValue();
 
-                // Check if the selected item is a container (not the root item)
-                if (!containerName.equals("Root")) {
-                    // Find the corresponding PaneDimensions for the selected container
-                    PaneDimensions selectedPaneDim = findPaneDimensionsByName(existingPanes, containerName);
-                    if (selectedPaneDim != null) {
-                        price = selectedPaneDim.getPrice();
+                    // Handle special cases for predefined containers
+                    if (selectedPaneName.equals("Barn")) {
+                        displayPriceInformation(findPaneDimensionsByName(existingPanes, "barn"));
+                    } else if (selectedPaneName.equals("Cattle")) {
+                        displayPriceInformation(findPaneDimensionsByName(existingPanes, "cattle"));
+                    } else if (selectedPaneName.equals("Drone")) {
+                        displayPriceInformation(findPaneDimensionsByName(existingPanes, "drone_pane"));
+                    } else if (selectedPaneName.equals("Command Center")) {
+                        displayPriceInformation(findPaneDimensionsByName(existingPanes, "command_center"));
+                    } else {
+                        // For user-created containers
+                        // Find the corresponding PaneDimensions by name
+                        PaneDimensions selectedPaneDimensions = findPaneDimensionsByName(existingPanes, selectedPaneName);
+
+                        // Display price information in the new Pane to the right
+                        displayPriceInformation(selectedPaneDimensions);
                     }
-                } else {
-                    priceLabel.setText(""); // Clear the price label for non-container selections
-                    return;
                 }
-
-                // Update the price for premade containers
-                if (containerName.equals("Barn")) {
-                    price = 5000.0; // Set the price for Barn
-                } else if (containerName.equals("Cattle")) {
-                    price = 500.0; // Set the price for Cattle
-                } else if (containerName.equals("Command Center")) {
-                    price = 5000.0; // Set the price for Command Center
-                } else if (containerName.equals("Drone")) {
-                    price = 200.0; // Set the price for Drone
-                }
-
-                priceLabel.setText("Price: $" + price); // Display the price
             }
         });
+
+
+    }
+
+    private void displayPriceInformation(PaneDimensions paneDimensions) {
+        // Clear existing content in infoPane
+        infoPane.getChildren().clear();
+
+        // Create labels to display price information
+        Label nameLabel = new Label("Name: " + paneDimensions.getPane().getId());
+        Label priceLabel = new Label("Price: $" + paneDimensions.getPrice());
+
+
+        // Add labels to the infoPane
+        infoPane.getChildren().addAll(nameLabel, priceLabel);
     }
 
     private TreeItem<String> findTreeItem(TreeItem<String> root, String name) {
