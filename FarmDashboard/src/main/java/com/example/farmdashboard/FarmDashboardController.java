@@ -21,6 +21,8 @@ import main.java.surelyhuman.jdrone.control.physical.tello.TelloFlight;
 import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+
 
 
 public class FarmDashboardController implements Initializable {
@@ -48,14 +50,17 @@ public class FarmDashboardController implements Initializable {
     private Button launch_drone;
     @FXML
     private VBox infoPane;
+    private List<PaneDimensions> existingPanes = new ArrayList<>();
 
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
         ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
-        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000));
-        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500));
-        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200));
-        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000));
+        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000, 5000));
+        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500, 500));
+        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200, 200));
+        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000, 5000));
+
+
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         root_pane.setStyle("-fx-border-color: blue;");
@@ -116,6 +121,7 @@ public class FarmDashboardController implements Initializable {
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 double price = Double.parseDouble(pricetextField.getText());
+                double marketValue = Double.parseDouble(pricetextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
                     newPane.setId(name);
@@ -128,7 +134,8 @@ public class FarmDashboardController implements Initializable {
                     root_pane.getChildren().add(newPane);
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price));
+                    updateMarketValue(newPane, existingPanes);
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue));
                     stage.close();
                 }
             });
@@ -179,6 +186,7 @@ public class FarmDashboardController implements Initializable {
                 double x = Double.parseDouble(xTextField.getText());
                 double y = Double.parseDouble(yTextField.getText());
                 double price = Double.parseDouble(pricetextField.getText());
+                double marketValue = Double.parseDouble(pricetextField.getText());
                 if (!name.isEmpty()) {
                     Pane newPane = new Pane();
                     newPane.setId(name);
@@ -192,6 +200,8 @@ public class FarmDashboardController implements Initializable {
                     // Add the newPane to the selectedPane
                     selectedPane.getChildren().add(newPane);
 
+                    updateMarketValue(selectedPane, existingPanes);
+
                     // Create a new TreeItem for the added item
                     TreeItem<String> newItem = new TreeItem<>(name);
 
@@ -202,7 +212,7 @@ public class FarmDashboardController implements Initializable {
                     }
                     
 
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue));
                     stage.close();
                 }
             });
@@ -249,6 +259,8 @@ public class FarmDashboardController implements Initializable {
                         parentItem.getChildren().remove(itemToRemove);
                     }
                 }
+
+                updateMarketValue((Pane) selectedPane.getParent(), existingPanes);
 
                 stage.close();
             });
@@ -312,6 +324,7 @@ public class FarmDashboardController implements Initializable {
                 double newX = Double.parseDouble(xTextField.getText());
                 double newY = Double.parseDouble(yTextField.getText());
                 double newPrice = Double.parseDouble(pricetextField.getText());
+                double newmarketValue = Double.parseDouble(pricetextField.getText());
                 String name = textField.getText();
 
                 if (!name.isEmpty()) {
@@ -322,22 +335,23 @@ public class FarmDashboardController implements Initializable {
                     selectedPane.getPane().setPrefSize(newLength, newWidth);
                     selectedPane.getPane().setLayoutX(newX);
                     selectedPane.getPane().setLayoutY(newY);
-                    selectedPane.setHeight(newHeight); // Update the height
-                    selectedPane.setPrice(newPrice); // Update the price
+                    selectedPane.setHeight(newHeight);
+                    selectedPane.setPrice(newPrice);
+                    selectedPane.setMarketValue(newPrice);
 
                     // Update the name in the TreeView
                     TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getPane().getId());
                     if (selectedItem != null) {
-                        selectedItem.setValue(name); // Update the value of the TreeItem
+                        selectedItem.setValue(name);
                     }
 
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice));
+                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice, newmarketValue));
                     }
 
-                    selectedPane.getPane().setId(name); // Update the ID of the existing pane
+                    selectedPane.getPane().setId(name);
 
                     stage.close();
                 }
@@ -443,16 +457,16 @@ public class FarmDashboardController implements Initializable {
 
 
 
-// Add a listener to the selection property of the TreeView
+        // Add a listener to the selection property of the TreeView
         tree_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue,
                                 TreeItem<String> newValue) {
                 if (newValue != null) {
-                    // Get the selected item's ID (name) from the TreeView
+
                     String selectedPaneName = newValue.getValue();
 
-                    // Handle special cases for predefined containers
+                    // premade containers
                     if (selectedPaneName.equals("Barn")) {
                         displayPriceInformation(findPaneDimensionsByName(existingPanes, "barn"));
                     } else if (selectedPaneName.equals("Cattle")) {
@@ -462,11 +476,11 @@ public class FarmDashboardController implements Initializable {
                     } else if (selectedPaneName.equals("Command Center")) {
                         displayPriceInformation(findPaneDimensionsByName(existingPanes, "command_center"));
                     } else {
-                        // For user-created containers
-                        // Find the corresponding PaneDimensions by name
+
+
                         PaneDimensions selectedPaneDimensions = findPaneDimensionsByName(existingPanes, selectedPaneName);
 
-                        // Display price information in the new Pane to the right
+                        // Display price information in the new Pane
                         displayPriceInformation(selectedPaneDimensions);
                     }
                 }
@@ -483,10 +497,9 @@ public class FarmDashboardController implements Initializable {
         // Create labels to display price information
         Label nameLabel = new Label("Name: " + paneDimensions.getPane().getId());
         Label priceLabel = new Label("Price: $" + paneDimensions.getPrice());
+        Label marketValueLabel = new Label("Current Market Value: $" + paneDimensions.getMarketValue());
 
-
-        // Add labels to the infoPane
-        infoPane.getChildren().addAll(nameLabel, priceLabel);
+        infoPane.getChildren().addAll(nameLabel, priceLabel, marketValueLabel);
     }
 
     private TreeItem<String> findTreeItem(TreeItem<String> root, String name) {
@@ -504,7 +517,7 @@ public class FarmDashboardController implements Initializable {
 
 
 
-    // Helper method to find PaneDimensions by name
+
     private PaneDimensions findPaneDimensionsByName(List<PaneDimensions> paneDimensionsList, String name) {
         for (PaneDimensions paneDim : paneDimensionsList) {
             if (paneDim.getPane().getId().equals(name)) {
@@ -514,6 +527,37 @@ public class FarmDashboardController implements Initializable {
         return null;
     }
 
+    // Helper method to update the market value of a container based on its children
+    private void updateMarketValue(Pane container, List<PaneDimensions> existingPanes) {
+        double marketValue = 0;
+
+        for (PaneDimensions paneDim : existingPanes) {
+            if (paneDim.getPane().getParent() == container) {
+                marketValue += paneDim.getMarketValue();
+            }
+        }
+
+        for (PaneDimensions paneDim : existingPanes) {
+            if (paneDim.getPane() == container) {
+                double previousMarketValue = paneDim.getMarketValue();
+                if (previousMarketValue != 0) {
+                    // Update market value based on the sum of children's market values
+                    paneDim.setMarketValue(marketValue);
+                } else {
+                    // Calculate market value from scratch
+                    paneDim.setMarketValue(paneDim.getPrice() + marketValue);
+                }
+                displayPriceInformation(paneDim);
+                break;
+            }
+        }
+    }
+
+
+
+
+
+
 
     // Used to store the pane name and location etc
     class PaneDimensions {
@@ -522,14 +566,16 @@ public class FarmDashboardController implements Initializable {
         private double length;
         private double height;
         private double price;
+        private double marketValue;
 
 
-        public PaneDimensions(Pane pane, double width, double length, double height,double price) {
+        public PaneDimensions(Pane pane, double width, double length, double height,double price, double marketValue) {
             this.pane = pane;
             this.width = width;
             this.length = length;
             this.height = height;
             this.price = price;
+            this.marketValue = price;
         }
 
         public Pane getPane() {
@@ -556,9 +602,18 @@ public class FarmDashboardController implements Initializable {
         public void setPrice(double price) {
             this.price = price;
         }
+
+        public double getMarketValue() {
+            return marketValue;
+        }
+
+        public void setMarketValue(double marketValue) {
+            this.marketValue = marketValue;
+        }
+
         @Override
         public String toString() {
-            return pane.getId(); // Display the ID of the Pane
+            return pane.getId();
         }
     }
 
