@@ -8,75 +8,57 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.farmdashboard.FarmDashboardController">
-   <SplitPane dividerPositions="0.19524405506883605" prefHeight="900.0" prefWidth="1600.0">
-     <items>
-         <SplitPane dividerPositions="0.6670378619153675" orientation="VERTICAL" prefHeight="898.0" prefWidth="1600.0">
-           <items>
-             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                  <children>
-                     <TreeView fx:id="tree_view" layoutX="26.0" layoutY="15.0" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" prefHeight="282.0" prefWidth="258.0" />
-                     <Button fx:id="add_container" layoutX="20.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="New Container" />
-                     <Button fx:id="existing_container" layoutX="20.0" layoutY="365.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Add Container to Existing Container" />
-                     <Button fx:id="delete_container" layoutX="20.0" layoutY="405.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Delete Container" />
-                     <Button fx:id="change_container" layoutX="160.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Change Container" />
-                     <Button fx:id="launch_drone" layoutX="160.0" layoutY="405.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Launch Drone" />
-                  </children>
-               </AnchorPane>
-               <SplitPane dividerPositions="0.581081081081081" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-                 <items>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+    <SplitPane dividerPositions="0.19524405506883605" prefHeight="900.0" prefWidth="1600.0">
+        <items>
+            <SplitPane orientation="VERTICAL" prefHeight="898.0" prefWidth="1600.0">
+                <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                         <children>
+
                            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" text="Drone Image Action" textAlignment="CENTER" textFill="#1767d0">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
                            </Label>
-                           <Button fx:id="scan_farm" layoutX="19.0" layoutY="114.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Scan Farm" />
-                           <Button layoutX="19.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Vist Item/Container" />
-                           <Button layoutX="159.0" layoutY="68.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Go Home" />
+
+                            <TreeView fx:id="tree_view" layoutX="26.0" layoutY="15.0" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" prefHeight="282.0" prefWidth="258.0" />
+                            <!-- Newly added VBox for the right pane -->
+                            <VBox fx:id="infoPane" layoutX="310.0" layoutY="15.0" prefHeight="300" prefWidth="300" spacing="10">
+                                <Label style="-fx-font-size: 16; -fx-font-weight: bold;" text="Price Information" />
+                            </VBox>
+                            <Button fx:id="add_container" layoutX="20.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="New Container" />
+                            <Button fx:id="existing_container" layoutX="20.0" layoutY="365.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Add Container to Existing Container" />
+                            <Button fx:id="delete_container" layoutX="20.0" layoutY="405.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Delete Container" />
+                            <Button fx:id="change_container" layoutX="160.0" layoutY="325.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Change Container" />
+                            <Button fx:id="launch_drone" layoutX="160.0" layoutY="405.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Launch Drone" />
+                            <Button fx:id="scan_farm" layoutX="20.0" layoutY="449.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="270.0" text="Scan Farm" />
                         </children>
-                     </AnchorPane>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    </AnchorPane>
+                </items>
+            </SplitPane>
+            <AnchorPane fx:id="root_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0">
+                <children>
+                    <Pane fx:id="command_center" layoutX="375.0" prefHeight="50.0" prefWidth="50.0">
                         <children>
-                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" text="Tello Drone Actions" textAlignment="CENTER" textFill="#1767d0">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
-                           </Label>
-                           <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Scan Farm" />
-                           <Button layoutX="165.0" layoutY="61.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Vist Item/Container" />
+                            <Pane fx:id="drone_pane" layoutX="13.0" layoutY="13.0" prefHeight="25.0" prefWidth="25.0">
+                                <children>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="-12.0" layoutY="-12.0" scaleX="0.5" scaleY="0.5">
+                                        <image>
+                                            <Image url="@icons8-drone-100.png" />
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Pane>
                         </children>
-                     </AnchorPane>
-                 </items>
-               </SplitPane>
-           </items>
-         </SplitPane>
-       <AnchorPane fx:id="root_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0">
-            <children>
-               <Pane fx:id="command_center" layoutX="375.0" prefHeight="50.0" prefWidth="50.0">
-                  <children>
-                     <Pane fx:id="drone_pane" layoutX="13.0" layoutY="13.0" prefHeight="25.0" prefWidth="25.0">
+                    </Pane>
+                    <Pane fx:id="barn" layoutX="636.0" layoutY="436.0" prefHeight="150.0" prefWidth="150.0">
                         <children>
-                           <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="-12.0" layoutY="-12.0" scaleX="0.5" scaleY="0.5">
-                              <image>
-                                  <Image url="@icons8-drone-100.png" />
-            
-                                    </image>
-                           </ImageView>
+                            <Pane fx:id="cattle" layoutX="28.0" layoutY="99.0" prefHeight="25.0" prefWidth="25.0" />
                         </children>
-                     </Pane>
-                  </children>
-               </Pane>
-               <Pane fx:id="barn" layoutX="636.0" layoutY="436.0" prefHeight="150.0" prefWidth="150.0">
-                  <children>
-                     <Pane fx:id="cattle" layoutX="28.0" layoutY="99.0" prefHeight="25.0" prefWidth="25.0" />
-                  </children>
-               </Pane>
-            </children>
-         </AnchorPane>
-     </items>
-   </SplitPane>
+                    </Pane>
+                </children>
+            </AnchorPane>
+
+        </items>
+    </SplitPane>
 </AnchorPane>
