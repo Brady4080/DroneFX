@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.animation.PauseTransition;
 
 public class FarmDashboardController implements Initializable {
     @FXML
@@ -400,6 +401,7 @@ public class FarmDashboardController implements Initializable {
 
                 PaneDimensions selectedPaneDim1 = null;
                 PaneDimensions selectedPaneDim2 = null;
+                PaneDimensions parentPaneDim = null;
 
                 for (PaneDimensions paneDim : existingPanes) {
                     if (paneDim.getPane() == selectedPane1) {
@@ -424,9 +426,36 @@ public class FarmDashboardController implements Initializable {
 
                     TelloFlight.ccLocation(ccWidth, ccLength, 0);
 
-                    double width2 = selectedPaneDim2.getWidth();
-                    double length2 = selectedPaneDim2.getLength();
-                    double height2 = selectedPaneDim2.getHeight();
+                    double width2 = 0.0; // Default value or assign as needed
+                    double length2 = 0.0; // Default value or assign as needed
+                    double height2 = 0.0; // Default value or assign as needed
+
+                    Pane parentPane = (Pane) selectedPane2.getParent();
+
+                    if (parentPane != null && parentPane instanceof Pane) {
+
+                        for (PaneDimensions paneDim : existingPanes) {
+                            if (paneDim.getPane() == parentPane) {
+                                parentPaneDim = paneDim;
+                                break;
+                            }
+                        }
+
+                        if (parentPaneDim != null) {
+                            double selectPane2Width = selectedPaneDim2.getWidth();
+                            double parentPaneWidth = parentPaneDim.getWidth();
+                            width2 = selectPane2Width + parentPaneWidth;
+
+                            double selectPane2Length = selectedPaneDim2.getLength();
+                            double parentPaneLength = parentPaneDim.getLength();
+                            length2 = selectPane2Length + parentPaneLength;
+
+                        } else {
+                            width2 = selectedPaneDim2.getWidth();
+                            length2 = selectedPaneDim2.getLength();
+                            height2 = selectedPaneDim2.getHeight();
+                        }
+                    }
 
                     int tdWidth = (int) width2;
                     int tdLength = (int) length2;
@@ -440,6 +469,7 @@ public class FarmDashboardController implements Initializable {
                     int pixelLength = (int) lengthDist;
 
                     TelloFlight.getDist(pixelWidth, pixelLength, 0);
+                    containerAnimation(pixelWidth, pixelLength, ccWidth, ccLength, tdWidth, tdLength);
 
                     System.out.println(widthDist);
                     System.out.println(lengthDist);
@@ -697,20 +727,6 @@ public class FarmDashboardController implements Initializable {
                                                                                         int ccLocW = ccWidth - 700;
                                                                                         int ccLocL = 500 - ccLength;
 
-                                                                                        if (pixelWidth < 400) {
-                                                                                            transition.setToX(drone_pane.getTranslateX() + -pixelWidth + 100);
-                                                                                        } else if (pixelWidth == 0) {
-                                                                                            transition.setToX(drone_pane.getTranslateX());
-                                                                                        } else {
-                                                                                            transition.setToX(drone_pane.getTranslateX() - pixelWidth + 100);
-                                                                                        }
-
-                                                                                        if (pixelLength == 0) {
-                                                                                            transition.setToY(drone_pane.getTranslateY() + 100);
-                                                                                        } else {
-                                                                                            transition.setToY(drone_pane.getTranslateY() - pixelLength + 100);
-                                                                                        }
-
                                                                                         if (ccLocW < 0) {
                                                                                             fifthteenTransition.setToX(drone_pane.getTranslateX() + ccLocW);
                                                                                         } else if (ccLocW == 0){
@@ -784,6 +800,62 @@ public class FarmDashboardController implements Initializable {
 
             secondTransition.play();
         });
+    }
+
+    public void containerAnimation(int pixelWidth, int pixelLength, int ccWidth, int ccLength, int tdWidth, int tdLength){
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1), drone_pane);
+
+        if (pixelWidth < 400) {
+            transition.setToX(drone_pane.getTranslateX() - pixelWidth);
+        } else if (pixelWidth == 0) {
+            transition.setToX(drone_pane.getTranslateX());
+        } else {
+            transition.setToX(drone_pane.getTranslateX() + pixelWidth);
+        }
+
+        if (pixelLength == 0) {
+            transition.setToY(drone_pane.getTranslateY());
+        } else {
+            transition.setToY(drone_pane.getTranslateY() + pixelLength);
+        }
+
+        transition.setOnFinished(event1 -> {
+            RotateTransition rtransition = new RotateTransition(Duration.seconds(1), drone_pane);
+            rtransition.setByAngle(360);
+
+            rtransition.setOnFinished(event2 -> {
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+
+                delay.setOnFinished(event -> {
+                    TranslateTransition secTransition = new TranslateTransition(Duration.seconds(3), drone_pane);
+
+                    int ccLocW = ccWidth - tdWidth;
+                    int ccLocL = tdLength - ccLength;
+
+                    if (ccLocW < 400) {
+                        secTransition.setToX(drone_pane.getTranslateX() + ccLocW);
+                    } else if (ccLocW == 0){
+                        secTransition.setToX(drone_pane.getTranslateX());
+                    } else {
+                        secTransition.setToX(drone_pane.getTranslateX() - ccLocW);
+                    }
+
+                    if (ccLocL < 0) {
+                        secTransition.setToY(drone_pane.getTranslateY() + ccLocL);
+                    } else {
+                        secTransition.setToY(drone_pane.getTranslateY() - ccLocL);
+                    }
+
+                    secTransition.play();
+                });
+
+                delay.play();
+            });
+
+            rtransition.play();
+        });
+
+        transition.play();
     }
 
     private void displayPriceInformation(PaneDimensions paneDimensions) {
