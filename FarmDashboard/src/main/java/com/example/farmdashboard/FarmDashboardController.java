@@ -59,11 +59,11 @@ public class FarmDashboardController implements Initializable {
     @Override public void initialize(URL arg0, ResourceBundle arg1){
         // storing a list of the panes
         ArrayList<PaneDimensions> existingPanes = new ArrayList<>();
-        existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0, 0, 0));
-        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000, 5000));
-        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500, 500));
-        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200, 200));
-        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000, 5000));
+        existingPanes.add(new PaneDimensions(root_pane, 0, 0, 0, 0, 0, 600, 800));
+        existingPanes.add(new PaneDimensions(barn, 636.0, 436.0, 0, 5000, 5000, 150, 150));
+        existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500, 500, 25, 25));
+        existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200, 200, 25, 25));
+        existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000, 5000, 50, 50));
 
 
 
@@ -141,7 +141,7 @@ public class FarmDashboardController implements Initializable {
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
                     updateMarketValue(newPane, existingPanes);
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue));
+                    existingPanes.add(new PaneDimensions(newPane, x, y, height, price, marketValue, length, width));
                     stage.close();
                 }
             });
@@ -218,7 +218,7 @@ public class FarmDashboardController implements Initializable {
                     }
                     
 
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue));
+                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue, length, width));
                     stage.close();
                 }
             });
@@ -351,6 +351,7 @@ public class FarmDashboardController implements Initializable {
                     selectedPane.setPrice(newPrice);
                     selectedPane.setMarketValue(newPrice);
 
+
                     // Update the name in the TreeView
                     TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getPane().getId());
                     if (selectedItem != null) {
@@ -360,7 +361,7 @@ public class FarmDashboardController implements Initializable {
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice, newmarketValue));
+                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice, newmarketValue, newLength, newWidth));
                     }
 
                     selectedPane.getPane().setId(name);
@@ -426,9 +427,11 @@ public class FarmDashboardController implements Initializable {
 
                     TelloFlight.ccLocation(ccWidth, ccLength, 0);
 
-                    double width2 = 0.0; // Default value or assign as needed
-                    double length2 = 0.0; // Default value or assign as needed
-                    double height2 = 0.0; // Default value or assign as needed
+                    double width2 = 0.0;
+                    double length2 = 0.0;
+
+                    double prefL = 0.0;
+                    double prefW = 0.0;
 
                     Pane parentPane = (Pane) selectedPane2.getParent();
 
@@ -442,18 +445,24 @@ public class FarmDashboardController implements Initializable {
                         }
 
                         if (parentPaneDim != null) {
+                            prefL = selectedPaneDim2.getPrefLength() / 2;
+                            prefW = selectedPaneDim2.getPrefWidth() / 2;
+
+
                             double selectPane2Width = selectedPaneDim2.getWidth();
                             double parentPaneWidth = parentPaneDim.getWidth();
-                            width2 = selectPane2Width + parentPaneWidth;
+                            width2 = selectPane2Width + parentPaneWidth + prefW - 25;
 
                             double selectPane2Length = selectedPaneDim2.getLength();
                             double parentPaneLength = parentPaneDim.getLength();
-                            length2 = selectPane2Length + parentPaneLength;
+                            length2 = selectPane2Length + parentPaneLength + prefL - 25;
 
                         } else {
-                            width2 = selectedPaneDim2.getWidth();
-                            length2 = selectedPaneDim2.getLength();
-                            height2 = selectedPaneDim2.getHeight();
+                            prefL = selectedPaneDim2.getPrefLength();
+                            prefW = selectedPaneDim2.getPrefWidth();
+
+                            width2 = selectedPaneDim2.getWidth() + prefW - 25;
+                            length2 = selectedPaneDim2.getLength() + prefL - 25;
                         }
                     }
 
@@ -926,14 +935,18 @@ public class FarmDashboardController implements Initializable {
         private double height;
         private double price;
         private double marketValue;
+        private double prefL;
+        private  double prefW;
 
-        public PaneDimensions(Pane pane, double width, double length, double height,double price, double marketValue) {
+        public PaneDimensions(Pane pane, double width, double length, double height,double price, double marketValue, double prefL, double prefW) {
             this.pane = pane;
             this.width = width;
             this.length = length;
             this.height = height;
             this.price = price;
             this.marketValue = price;
+            this.prefL = prefL;
+            this.prefW = prefW;
         }
 
         public Pane getPane() {
@@ -968,6 +981,10 @@ public class FarmDashboardController implements Initializable {
         public void setMarketValue(double marketValue) {
             this.marketValue = marketValue;
         }
+
+        public double getPrefWidth() { return prefW; };
+
+        public double getPrefLength() { return prefL; };
 
         @Override
         public String toString() {
