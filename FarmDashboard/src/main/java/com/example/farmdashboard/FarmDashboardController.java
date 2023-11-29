@@ -101,9 +101,9 @@ public class FarmDashboardController implements Initializable {
         TreeItem<String> barn = new TreeItem<>("Barn");
         TreeItem<String> cattle = new TreeItem<>("Cattle");
         TreeItem<String> command_center_tree = new TreeItem<>("Command Center");
-        TreeItem<String> drone_pane = new TreeItem<>("Drone");
+        TreeItem<String> drone_pane_tree = new TreeItem<>("Drone");
         barn.getChildren().add(cattle);
-        command_center_tree.getChildren().add(drone_pane);
+        command_center_tree.getChildren().add(drone_pane_tree);
         rootItem.getChildren().addAll(barn, command_center_tree);
         tree_view.setRoot(rootItem);
 
@@ -228,8 +228,9 @@ public class FarmDashboardController implements Initializable {
                     if (selectedPaneItem != null) {
                         selectedPaneItem.getChildren().add(newItem);
                     }
-                  
-                    existingPanes.add(new PaneDimensions(newPane, width, length, height, price, marketValue, length, width));
+                    
+
+                    existingPanes.add(new PaneDimensions(newPane, x, y, height, price, marketValue, length, width));
 
                     stage.close();
                 }
@@ -322,8 +323,8 @@ public class FarmDashboardController implements Initializable {
                 PaneDimensions selectedPane = select_pane.getValue();
                 if (selectedPane != null) {
                     textField.setText(selectedPane.getPane().getId());
-                    lengthTextField.setText(Double.toString(selectedPane.getLength()));
-                    widthTextField.setText(Double.toString(selectedPane.getWidth()));
+                    lengthTextField.setText(Double.toString(selectedPane.getPane().getPrefHeight()));
+                    widthTextField.setText(Double.toString(selectedPane.getPane().getPrefWidth()));
                     heightTextField.setText(Double.toString(selectedPane.getHeight()));
                     xTextField.setText(Double.toString(selectedPane.getPane().getLayoutX()));
                     yTextField.setText(Double.toString(selectedPane.getPane().getLayoutY()));
@@ -372,7 +373,7 @@ public class FarmDashboardController implements Initializable {
                     // Update the name in the list of existing panes
                     int index = existingPanes.indexOf(selectedPane);
                     if (index != -1) {
-                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newWidth, newLength, newHeight, newPrice, newmarketValue, newLength, newWidth));
+                        existingPanes.set(index, new PaneDimensions(selectedPane.getPane(), newX, newY, newHeight, newPrice, newmarketValue, newLength, newWidth));
                     }
 
                     selectedPane.getPane().setId(name);
@@ -436,6 +437,9 @@ public class FarmDashboardController implements Initializable {
                     int ccWidth = (int) width1;
                     int ccLength = (int) length1;
 
+                    System.out.println(ccWidth);
+                    System.out.println(ccLength);
+
                     TelloFlight.ccLocation(ccWidth, ccLength, 0);
 
                     double width2 = 0.0;
@@ -459,7 +463,6 @@ public class FarmDashboardController implements Initializable {
                             prefL = selectedPaneDim2.getPrefLength() / 2;
                             prefW = selectedPaneDim2.getPrefWidth() / 2;
 
-
                             double selectPane2Width = selectedPaneDim2.getWidth();
                             double parentPaneWidth = parentPaneDim.getWidth();
                             width2 = selectPane2Width + parentPaneWidth + prefW - 25;
@@ -472,7 +475,7 @@ public class FarmDashboardController implements Initializable {
                             prefL = selectedPaneDim2.getPrefLength();
                             prefW = selectedPaneDim2.getPrefWidth();
 
-                            width2 = selectedPaneDim2.getWidth() + prefW - 25;
+                            width2 = selectedPaneDim2.getWidth() + prefW - drone_pane.getPrefHeight();
                             length2 = selectedPaneDim2.getLength() + prefL - 25;
                         }
                     }
@@ -861,7 +864,7 @@ public class FarmDashboardController implements Initializable {
                     }
 
                     if (ccLocL < 0) {
-                        secTransition.setToY(drone_pane.getTranslateY() + ccLocL);
+                        secTransition.setToY(drone_pane.getTranslateY() - ccLocL);
                     } else {
                         secTransition.setToY(drone_pane.getTranslateY() - ccLocL);
                     }
