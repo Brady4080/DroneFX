@@ -26,6 +26,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.animation.PauseTransition;
 
+import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+
+
+
 public class FarmDashboardController implements Initializable {
     @FXML
     private Pane barn;
@@ -50,7 +57,13 @@ public class FarmDashboardController implements Initializable {
     @FXML
     private Button launch_drone;
     @FXML
+
     private Button scan_farm;
+    @FXML
+    private VBox infoPane;
+    private List<PaneDimensions> existingPanes = new ArrayList<>();
+
+
     @FXML
     private VBox infoPane;
     private List<PaneDimensions> existingPanes = new ArrayList<>();
@@ -64,9 +77,6 @@ public class FarmDashboardController implements Initializable {
         existingPanes.add(new PaneDimensions(cattle, 28.0, 99.0, 0, 500, 500, 25, 25));
         existingPanes.add(new PaneDimensions(drone_pane, 13.0, 13.0, 0, 200, 200, 25, 25));
         existingPanes.add(new PaneDimensions(command_center, 375.0, 0, 0,5000, 5000, 50, 50));
-
-
-
 
         // how to change the border color: https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html#border
         root_pane.setStyle("-fx-border-color: blue;");
@@ -141,7 +151,9 @@ public class FarmDashboardController implements Initializable {
                     TreeItem<String> newBranchItem = new TreeItem<>(name);
                     rootItem.getChildren().add(newBranchItem);
                     updateMarketValue(newPane, existingPanes);
+
                     existingPanes.add(new PaneDimensions(newPane, x, y, height, price, marketValue, length, width));
+                  
                     stage.close();
                 }
             });
@@ -219,6 +231,7 @@ public class FarmDashboardController implements Initializable {
                     
 
                     existingPanes.add(new PaneDimensions(newPane, x, y, height, price, marketValue, length, width));
+
                     stage.close();
                 }
             });
@@ -350,7 +363,6 @@ public class FarmDashboardController implements Initializable {
                     selectedPane.setHeight(newHeight);
                     selectedPane.setPrice(newPrice);
                     selectedPane.setMarketValue(newPrice);
-
 
                     // Update the name in the TreeView
                     TreeItem<String> selectedItem = findTreeItem(rootItem, selectedPane.getPane().getId());
