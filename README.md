@@ -34,11 +34,11 @@ This project is a Java based done project for a UAB class. The goal of this proj
 
 ## Slides
 
-![Slides](readme_Pictures/picture1.pdf)
-![Slides](readme_Pictures/picture2.pdf)
-![Slides](readme_Pictures/picture3.pdf)
-![Slides](readme_Pictures/picture4.pdf)
-![Slides](readme_Pictures/picture5.pdf)
-![Slides](readme_Pictures/picture6.pdf)
-![Slides](readme_Pictures/picture7.pdf)
-![Slides](readme_Pictures/picture8.pdf)
+![Slides](readme_Pictures/picture1-1.png)
+![Slides](readme_Pictures/picture2-1.png)
+![Slides](readme_Pictures/picture3-1.png)
+![Slides](readme_Pictures/picture4-1.png)
+![Slides](readme_Pictures/picture5-1.png)
+![Slides](readme_Pictures/picture6-1.png)
+![Slides](readme_Pictures/picture7-1.png)
+![Slides](readme_Pictures/picture8-1.png)
