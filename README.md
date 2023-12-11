@@ -1,4 +1,7 @@
-# A Farm Drone Project for CS420
+# A Farm Drone Project
+
+## Introduction
+This project is a Java based done project for a UAB class. The goal of this project was to make a ui and use a tello drone to fly to an area and return to the command center location. It also has a scan function where the drone scans up and down the area. 
 
 ## To download
 	- Click the Code button above and a drop down will open
@@ -19,3 +22,23 @@
 	- If your pc is missing an dependicy make sure to download and install the ones it says you need
 	- If everything is installed and downloaded properly you can launch the file 
 	- Then a new window will open
+
+## UI Demo Video
+	- https://youtu.be/Fn_1_kLptX4
+	
+## Technologies
+	- Java: We used this becuase it was a requirement.
+	- JavaFX: Also a requirement.
+	- Github: We used this because it was a requirement, also to store and collaborate on the project. 
+	- Batchfile: Used this to try to make it so you can launch the drone application without needing to use and IDE.
+
+## Slides
+
+![Slides](readme_Pictures/picture1.pdf)
+![Slides](readme_Pictures/picture2.pdf)
+![Slides](readme_Pictures/picture3.pdf)
+![Slides](readme_Pictures/picture4.pdf)
+![Slides](readme_Pictures/picture5.pdf)
+![Slides](readme_Pictures/picture6.pdf)
+![Slides](readme_Pictures/picture7.pdf)
+![Slides](readme_Pictures/picture8.pdf)
