@@ -1,7 +1,7 @@
 # A Farm Drone Project
 
 ## Introduction
-This project is a Java based done project for a UAB class. The goal of this project was to make a ui and use a tello drone to fly to an area and return to the command center location. It also has a scan function where the drone scans up and down the area. 
+This project is a Java-based drone project for a UAB class. The goal of this project was to make a UI and use a Tello drone to fly to an area and return to the command center location. It also has a scan function where the drone scans up and down the area. 
 
 ## To download
 	- Click the Code button above and a drop down will open
